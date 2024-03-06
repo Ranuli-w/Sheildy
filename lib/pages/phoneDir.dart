@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FirebaseFirestore.instance
-      .settings(cacheSizeBytes: FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED);
+  FirebaseFirestore.instance.settings;
 
   runApp(MyApp());
 }
@@ -29,8 +29,13 @@ class PhoneDirectory extends StatefulWidget {
 
 class _PhoneDirectoryState extends State<PhoneDirectory> {
   final TextEditingController _searchController = TextEditingController();
-  final CollectionReference _phoneNumbers =
-      FirebaseFirestore.instance.collection('phoneNumbers');
+  late Stream<QuerySnapshot> _stream;
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = FirebaseFirestore.instance.collection('phoneNumbers').snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +55,20 @@ class _PhoneDirectoryState extends State<PhoneDirectory> {
                 prefixIcon: Icon(Icons.search),
               ),
               onChanged: (value) {
-                // Implement search functionality
+                // Implement search functionality here
+                setState(() {
+                  _stream = FirebaseFirestore.instance
+                      .collection('phoneNumbers')
+                      .where('name', isGreaterThanOrEqualTo: value)
+                      .where('name', isLessThan: value + 'z')
+                      .snapshots();
+                });
               },
             ),
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: _phoneNumbers.snapshots(),
+              stream: _stream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
