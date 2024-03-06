@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:shieldy/Components/my_textfield.dart';
 import 'package:shieldy/Components/sign_in_button.dart';
@@ -153,8 +152,6 @@ class LoginPage extends StatelessWidget {
       ),
     )
     );
-
-
   }
 }
 
