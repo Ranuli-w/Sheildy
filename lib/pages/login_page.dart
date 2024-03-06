@@ -1,5 +1,6 @@
 
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/Components/my_textfield.dart';
 import 'package:shieldy/Components/sign_in_button.dart';
@@ -9,13 +10,16 @@ class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
   //text edtiting controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   //sign in function
- signUserIn() {
-  
- }
+ void signUserIn() async {
+  await FirebaseAuth.instance.signInWithEmailAndPassword(
+    email: emailController.text,
+    password: passwordController.text,
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +52,12 @@ class LoginPage extends StatelessWidget {
 
           //username textfield
           MyTextField(
-              controller: usernameController,
+              controller: emailController,
               hintText: 'Username',
               obscureText: false,
             ),
 
-            const SizedBox(height: 10),	
+            const SizedBox(height: 10),
 
           
             //password textfield
@@ -61,7 +65,7 @@ class LoginPage extends StatelessWidget {
               controller: passwordController,
             hintText: 'Password',
             obscureText: true,
-          ), 
+          ),
 
           //forgot password?
           Padding(
@@ -139,7 +143,10 @@ class LoginPage extends StatelessWidget {
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Not a member? ',),
+              Text('Not a member? ',
+              style: TextStyle(
+                color: Colors.black,
+                )),
               Text('Register Now', 
               style: TextStyle(
                 color: Colors.blue,
@@ -153,8 +160,6 @@ class LoginPage extends StatelessWidget {
       ),
     )
     );
-
-
   }
 }
 
