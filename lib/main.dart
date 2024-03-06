@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: const responsiveLayout(mobileScreenLayout:mobileScreenLayout() ,webScreenLayout:webScreenLayout(),)//ResponsiveLayout
-      //Scaffold(body: LoginPage()), //LoginPage(),
+      //home: const responsiveLayout(mobileScreenLayout:mobileScreenLayout() ,///webScreenLayout:webScreenLayout(),)//ResponsiveLayout
+      home: Scaffold(body: LoginPage()), //LoginPage(),
     );
   }
 }
