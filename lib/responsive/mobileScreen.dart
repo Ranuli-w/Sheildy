@@ -3,6 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/utils/colors.dart';
+import 'package:shieldy/utils/GlobalVariables.dart';
+
+
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -44,8 +47,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       body: PageView(
         controller: pageController,
         onPageChanged: whenPageChanged,
-        //children: homeScreenItems,
-        children: [Text("feed page"),Text("map page"),Text(" camera page"),Text("phone page"),Text("settings page")],
+        children: homeScreenItems,
+        //children: [Text("feed page"),Text("map page"),Text(" camera page"),Text("phone page"),Text("settings page")],
         
         physics: NeverScrollableScrollPhysics(),//stop scrolling of page by touching horizontally
       ),
