@@ -18,7 +18,7 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   _redirectToAuthPage() {
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => AuthPage()),
       );
@@ -29,7 +29,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -40,7 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
+              const Text(
                 'Sheildy',
                 style: TextStyle(
                   fontSize: 32,
@@ -49,7 +49,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   color: Color(0xFF848eff), // Change text color to #848eff
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Image.asset(
                 'images/welcome.png', // Placeholder for Sheildy logo
                 height: 150,
