@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shieldy/pages/account_screen.dart';
+import 'package:shieldy/pages/auth_page.dart';
+import 'package:shieldy/responsive/mobileScreen.dart';
+import 'package:shieldy/responsive/responsiveLayout.dart';
+import 'package:shieldy/responsive/webScreen.dart';
+import 'package:shieldy/utils/colors.dart';
 import 'pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -20,8 +24,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //home: LoginPage(),
-      home: AccountScreen(key: Key('account_screen')),
+      home: AuthPage(),
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+      //home: const responsiveLayout(mobileScreenLayout:MobileScreenLayout() ,webScreenLayout:webScreenLayout(),)//ResponsiveLayout
     );
   }
 }
