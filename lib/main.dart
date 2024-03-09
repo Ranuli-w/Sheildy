@@ -34,6 +34,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:shieldy/pages/editProfile.dart';
 import 'package:shieldy/pages/phoneDir.dart'; // Replace with the correct import for your project
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
@@ -67,8 +68,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: const responsiveLayout(mobileScreenLayout:MobileScreenLayout() ,webScreenLayout:webScreenLayout(),)//ResponsiveLayout
+      //home: const responsiveLayout(mobileScreenLayout:MobileScreenLayout() ,webScreenLayout:webScreenLayout(),)//ResponsiveLayout
       //home: Scaffold(body: LoginPage()), //LoginPage(),
+      home:EditProfilePage() ,
     );
 
   }
