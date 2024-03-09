@@ -17,8 +17,8 @@ class sign_in_button extends StatelessWidget {
           color: Colors.black,
          
         ),
-        child: Center(
-          child: const Text(
+        child: const Center(
+          child: Text(
             'Sign In',
             style: TextStyle(
               color: Colors.white,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shieldy/pages/auth_page.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
@@ -7,7 +8,6 @@ import 'pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'package:shieldy/responsive/responsiveLayout.dart';
 
 
 void main() async{
@@ -26,9 +26,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: AuthPage(),
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: const responsiveLayout(mobileScreenLayout:MobileScreenLayout() ,webScreenLayout:webScreenLayout(),)//ResponsiveLayout
-      //home: Scaffold(body: LoginPage()), //LoginPage(),
+      //home: const responsiveLayout(mobileScreenLayout:MobileScreenLayout() ,webScreenLayout:webScreenLayout(),)//ResponsiveLayout
+      
     );
   }
 }

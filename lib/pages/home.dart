@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:shieldy/utils/colors.dart';
-class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+
+class HomeScreen extends StatelessWidget {
+  const  HomeScreen({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
