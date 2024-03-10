@@ -55,11 +55,11 @@ class EditProfilePage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // Update Profile button
-              sign_in_button(
-                onTap: updateProfile,
-                buttonText: 'Update Profile',
-              ),
+              // // Update Profile button
+              // Sign_in_button(
+              //   onTap: updateProfile,
+              //   buttonText: 'Update Profile',
+              // ),
             ],
           ),
         ),

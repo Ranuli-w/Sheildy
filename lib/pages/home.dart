@@ -9,6 +9,11 @@ import 'package:shieldy/widgets/HOmemain_container.dart';
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
 
+  //Sign user out method
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +30,19 @@ class Homepage extends StatelessWidget {
       },
     ),
     Spacer(),
+
     IconButton(
       icon: const Icon(Icons.notifications_none),
       onPressed: () {
         // Implement the action when the notification icon is pressed
       },
     ),
-  ],    
+
+    IconButton(
+      onPressed: signUserOut,
+      icon: const Icon(Icons.logout),
+    ),
+  ],
       ),
       body:   const FeedContainer(),
     );

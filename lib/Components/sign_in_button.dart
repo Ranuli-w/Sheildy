@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class Sign_in_button extends StatefulWidget {
   final VoidCallback? onTap;
+  final String text;
 
-  const Sign_in_button({Key? key, required this.onTap}) : super(key: key);
+  const Sign_in_button({
+    super.key,
+    required this.onTap,
+    required this.text,
+    });
 
   @override
   _Sign_in_buttonState createState() => _Sign_in_buttonState();
@@ -43,7 +48,7 @@ class _Sign_in_buttonState extends State<Sign_in_button> {
         ),
         child: Center(
           child: Text(
-            'Sign In',
+            widget.text,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
