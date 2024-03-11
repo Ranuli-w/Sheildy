@@ -1,36 +1,34 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shieldy/utils/colors.dart';
+import 'package:shieldy/widgets/HOmemain_container.dart';
 
-class HomeScreen extends StatelessWidget {
-  const  HomeScreen({super.key});
+class Homepage extends StatelessWidget {
+  const Homepage({Key? key}) : super(key: key);
 
-  @override
-  State<Homepage> createState() => _HomepageState();
-}
-
-class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
+        backgroundColor: mobileBackgroundColor, // Set background color here
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
             onPressed: () {
               // Implement the action when the profile icon is pressed
             },
-          ),Spacer(),
+          ),
+          Spacer(),
           IconButton(
             icon: const Icon(Icons.notifications_none),
             onPressed: () {
               // Implement the action when the notification icon is pressed
             },
           ),
-        ],backgroundColor: mobileBackgroundColor
-        
-      ),backgroundColor: mobileBackgroundColor,
+        ],
+      ),
+      body: const FeedContainer(),
     );
   }
 }
-
