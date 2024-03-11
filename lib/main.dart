@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/add_post_page.dart';
 import 'package:shieldy/pages/auth_page.dart';
 import 'package:shieldy/pages/welcome_page.dart'; // Import the WelcomePage class
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AddPostScreen(), // Changed the home to WelcomePage
+      home: const AccountScreen(), // Changed the home to WelcomePage
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );

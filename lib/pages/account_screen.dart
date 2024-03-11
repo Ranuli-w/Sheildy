@@ -124,7 +124,9 @@ class _AccountScreenState extends State<AccountScreen> {
                 onTap: (bool value) {
                   setState(() {
                     isSwitched = !isSwitched;
-                  });
+                  }
+                
+                  );
                 },
               ),
               const SizedBox(height: 40),
@@ -154,6 +156,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         builder: (context) => const PrivacyPolicyScreen()),
                   );
                 },
+                
               ),
             ],
           ),

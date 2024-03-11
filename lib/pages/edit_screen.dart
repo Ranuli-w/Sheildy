@@ -28,6 +28,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
