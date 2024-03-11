@@ -55,6 +55,7 @@
 
 //               const SizedBox(height: 20),
 
+
 //               // Update Profile button
 //               sign_in_button(
 //                 onTap: updateProfile,
@@ -67,3 +68,10 @@
 //     );
 //   }
 // }
+
+              // // Update Profile button
+              // Sign_in_button(
+              //   onTap: updateProfile,
+              //   buttonText: 'Update Profile',
+              // ),
+            
