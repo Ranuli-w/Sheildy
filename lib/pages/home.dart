@@ -38,6 +38,7 @@ class Homepage extends StatelessWidget {
       },
     ),
 
+    //Sign out button
     IconButton(
       onPressed: signUserOut,
       icon: const Icon(Icons.logout),
