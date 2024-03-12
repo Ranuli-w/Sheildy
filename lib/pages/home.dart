@@ -46,6 +46,6 @@ class Homepage extends StatelessWidget {
   ],
       ),
       body:   const FeedContainer(),
-    );
-  }
+);
+}
 }
