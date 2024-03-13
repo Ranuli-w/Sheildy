@@ -40,17 +40,6 @@ class _RegisterPageState extends State<RegisterPage> {
         } else {
           showErrorMessage('Passwords do not match !');
         }
-
-      //add user details to firestore
-      addUserDetails(
-        nameController.text,
-        int.parse(ageController.text),
-        usernameController.text,
-        emailController.text,
-      );
-      
-      //get the current user
-      User? user = FirebaseAuth.instance.currentUser;
       
       // Navigate to the next screen upon successful sign-in
     } on FirebaseAuthException catch (e) {
