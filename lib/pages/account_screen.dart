@@ -40,7 +40,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 "Settings",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 36,
+                  fontSize: 44,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -49,29 +49,37 @@ class _AccountScreenState extends State<AccountScreen> {
                 "Account",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 30,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 child: Row(
                   children: [
-                    Image.asset("images/avatar.png", width: 70, height: 70),
+                    ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(50), // Half of width and height
+                      child: Image.asset(
+                        "images/Avatar1.png",
+                        width: 90,
+                        height: 90,
+                      ),
+                    ),
                     const SizedBox(width: 30),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name, // Display the name
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text(
+                        const SizedBox(height: 10),
+                        const Text(
                           "",
                           style: TextStyle(fontSize: 14, color: Colors.blue),
                         ),
@@ -101,7 +109,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 "Settings",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 30,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -113,6 +121,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 iconColor: Colors.orange,
                 value: "English",
                 onTap: () {},
+                iconSize: 20,
               ),
               const SizedBox(height: 40),
               settingswitch(
@@ -124,9 +133,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 onTap: (bool value) {
                   setState(() {
                     isSwitched = !isSwitched;
-                  }
-                
-                  );
+                  });
                 },
               ),
               const SizedBox(height: 40),
@@ -156,7 +163,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         builder: (context) => const PrivacyPolicyScreen()),
                   );
                 },
-                
+                iconSize: 20,
               ),
             ],
           ),
