@@ -1,9 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/pages/add_post_page.dart';
-import 'package:shieldy/pages/auth_page.dart';
 import 'package:shieldy/pages/welcome_page.dart'; // Import the WelcomePage class
-import 'package:firebase_core/firebase_core.dart';
 import 'package:shieldy/utils/colors.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AccountScreen(), // Changed the home to WelcomePage
+      home: const AddPostScreen(), // Changed the home to WelcomePage
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );
