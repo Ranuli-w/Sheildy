@@ -47,6 +47,7 @@ dependencies:
   firebase_storage: ^11.6.9
   provider: ^6.1.2
   url_launcher: ^6.2.5
+  flutter_vector_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:
