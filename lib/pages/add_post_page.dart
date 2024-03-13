@@ -25,6 +25,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String profImage,
   ) async {
     try {
+
       String res = await FirestoreMethods().uploadPost(
         _descriptionController.text,
         _file!,
