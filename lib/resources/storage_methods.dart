@@ -8,23 +8,30 @@ class StorageMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  // adding image to firebase storage
-  Future<String> uploadImageToStorage(
-      String childName, Uint8List file, bool isPost) async {
-    // creating location to our firebase storage
+  Future<String> uploadImageToStorage(String childName, Uint8List file, String userId) async {
+    try {
+      // Create a reference to the user's folder using their UID
+      Reference ref = _storage.ref().child(childName).child(userId);
 
-    Reference ref =
-        _storage.ref().child(childName).child(_auth.currentUser!.uid);
-    if (isPost) {
+      // Generate a unique ID for the image
       String id = const Uuid().v1();
       ref = ref.child(id);
+
+      // Upload the image data to Firebase Storage
+      UploadTask uploadTask = ref.putData(file);
+
+      // Wait for the upload to complete
+      await uploadTask;
+
+      // Get the download URL of the uploaded image
+      String downloadUrl = await ref.getDownloadURL();
+      
+      // Return the download URL
+      return downloadUrl;
+    } catch (error) {
+      // Handle any errors that occur during the upload process
+      print('Error uploading image: $error');
+      return ''; // Return an empty string if an error occurs
     }
-
-    // putting in uint8list format -> Upload task like a future but not future
-    UploadTask uploadTask = ref.putData(file);
-
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
   }
 }

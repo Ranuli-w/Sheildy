@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shieldy/providers/user_provider.dart';
+import 'package:shieldy/provider/user_provider.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shieldy/model/user.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             TextButton(
               onPressed: () => postImage(
                 userProvider.getUser.uid,
-                userProvider.getUser.username,
+                userProvider.getUser.usernameController,
                 userProvider.getUser.photoUrl,
               ),
               child: const Text(
@@ -140,7 +141,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               children: [
                 CircleAvatar(
                   backgroundImage: NetworkImage(
-                    UserProvider().getUser.photourl,
+                    UserProvider().getUser.photoUrl,
                   ),
                 ),
                 SizedBox(

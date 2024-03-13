@@ -63,7 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
         emailController.text,
       );
       
-
+      //get the current user
+      User? user = FirebaseAuth.instance.currentUser;
       
       // Navigate to the next screen upon successful sign-in
     } on FirebaseAuthException catch (e) {
