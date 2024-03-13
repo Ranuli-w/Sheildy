@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 
 class FeedContainer extends StatelessWidget {
-  const FeedContainer({Key? key});
+  const FeedContainer({superKey, Key? key});
 
   @override
   Widget build(BuildContext context) {
