@@ -13,10 +13,10 @@ class ForwardButton extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 60,
-          height: 60,
+          width: 50,
+          height: 50,
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Colors.black,
             borderRadius: BorderRadius.circular(15),
           ),
           child: const Icon(Ionicons.chevron_forward_outline),
