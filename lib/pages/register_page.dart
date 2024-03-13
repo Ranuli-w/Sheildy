@@ -1,10 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shieldy/Components/my_textfield.dart';
 import 'package:shieldy/Components/sign_in_button.dart';
 import 'package:shieldy/Components/square_tile.dart';
-import 'package:flutter/gestures.dart';
 import 'package:shieldy/services/auth_service.dart';
 
 
@@ -20,7 +19,22 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-  void signUserUp() async {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    nameController.dispose();
+    ageController.dispose();
+    usernameController.dispose();
+    super.dispose();
+  }
+  
+  Future signUserUp() async {
 
     //show loading circle
     showDialog(context: context, builder: (context) {
@@ -31,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
     
     //try creating the user
     try {
-      //check if the password is confirmed
+      //create the user
       if (passwordController.text == confirmPasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
@@ -40,6 +54,16 @@ class _RegisterPageState extends State<RegisterPage> {
         } else {
           showErrorMessage('Passwords do not match !');
         }
+
+      //add user details to firestore
+      addUserDetails(
+        nameController.text,
+        int.parse(ageController.text),
+        usernameController.text,
+        emailController.text,
+      );
+      
+
       
       // Navigate to the next screen upon successful sign-in
     } on FirebaseAuthException catch (e) {
@@ -49,6 +73,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
     //hide loading circle
     Navigator.pop(context);
+  }
+
+  Future addUserDetails(String nameController, int ageController, String usernameController, String emailController) async {
+    await FirebaseFirestore.instance.collection("User_Details").add({
+      'Name': nameController,
+      'Age': ageController,
+      'Username': usernameController,
+      'Email': emailController,
+    });
+
   }
 
   //Error message for the user
@@ -96,20 +130,59 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 16,
                   ),
                 ),
+
                 const SizedBox(height: 25),
+
+                //Name Text Fields
                 MyTextField(
-                  controller: emailController,
-                  hintText: 'Username',
+                  controller: nameController,
+                  hintText: 'Name',
                   obscureText: false,
+                  textColor: Colors.black,
+                  
                 ),
 
                 const SizedBox(height: 10),
+
+                //Age Text Fields
+                MyTextField(
+                  controller: ageController,
+                  hintText: 'Age',
+                  obscureText: false,
+                  textColor: Colors.black,
+                  
+                ),
+
+                const SizedBox(height: 10),
+
+                //Username Text Fields
+                MyTextField(
+                  controller: usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
+                  textColor: Colors.black,
+                ),
+
+                const SizedBox(height: 10),
+
+                //Email Text Fields
+                MyTextField(
+                  controller: emailController,
+                  hintText: 'Email',
+                  obscureText: false,
+                  textColor: Colors.black,
+                ),
+
+                const SizedBox(height: 10),
+
+                
 
               //password text field
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
+                  textColor: Colors.black,
                 ),
 
                 const SizedBox(height: 10),
@@ -119,23 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: confirmPasswordController,
                   hintText: 'Confirm Password',
                   obscureText: true,
-                ),
-
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
+                  textColor: Colors.black,
                 ),
 
 
