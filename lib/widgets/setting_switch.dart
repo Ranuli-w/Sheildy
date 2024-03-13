@@ -27,7 +27,8 @@ class settingswitch extends StatelessWidget {
           Container(
             height: 50,
             width: 50,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: bgColor),
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle, color: Colors.white),
             child: Icon(
               icon,
               color: iconColor,
@@ -38,7 +39,7 @@ class settingswitch extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),

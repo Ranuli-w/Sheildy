@@ -17,6 +17,7 @@ class SettingItem extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.value,
+    required int iconSize,
   }) : super(key: key);
 
   @override
@@ -28,7 +29,9 @@ class SettingItem extends StatelessWidget {
           Container(
             height: 50,
             width: 50,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: bgColor),
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white), // Changed color to black),
             child: Icon(
               icon,
               color: iconColor,
@@ -38,7 +41,7 @@ class SettingItem extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.white, // Changed color to white
             ),
@@ -48,8 +51,8 @@ class SettingItem extends StatelessWidget {
               ? Text(
                   value!,
                   style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
+                    fontSize: 18,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 )
