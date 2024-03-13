@@ -16,14 +16,14 @@ class EditItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 4,
+          flex: 3,
           child: Padding(
             // Add Padding here
             padding: EdgeInsets.only(top: 20), // Adjust as needed
             child: Text(
               title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
