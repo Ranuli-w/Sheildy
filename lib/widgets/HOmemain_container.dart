@@ -147,6 +147,20 @@ class FeedContainer extends StatelessWidget {
                   ),
                 ),
               ),
+
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                  ),
+                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),),
+              ),
+              Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                  ),
+                  child: Text('09/02/2024',style:const TextStyle(fontSize: 15,color: secondaryColor)),)
             ],
           ),
         ),
