@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shieldy/providers/user_provider.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
@@ -19,7 +20,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
 
-  Future<void> postImage(
+  void postImage(
     String uid,
     String username,
     String profImage,
@@ -93,6 +94,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+
     if (_file == null) {
       return Center(
         child: IconButton(
@@ -112,7 +115,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
           centerTitle: false,
           actions: [
             TextButton(
-              onPressed: () {},
+              onPressed: () => postImage(
+                userProvider.getUser.uid,
+                userProvider.getUser.username,
+                userProvider.getUser.photoUrl,
+              ),
               child: const Text(
                 'Publish',
                 style: TextStyle(
@@ -130,6 +137,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    UserProvider().getUser.photourl,
+                  ),
+                ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: TextField(

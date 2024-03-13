@@ -9,6 +9,17 @@ import 'package:uuid/uuid.dart';
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> getDocID() async {
+    await FirebaseFirestore.instance
+        .collection('User_Details')
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        print(doc.id);
+      });
+    });
+  }
+
   Future<String> uploadPost(
     String description,
     Uint8List file,
