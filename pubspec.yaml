@@ -30,8 +30,9 @@ environment:
 dependencies:
   cloud_firestore: ^4.7.0
   image_picker: ^1.0.7
-
+  uuid: ^4.3.3
   firebase_core: ^2.25.4
+  photo_gallery: ^2.1.1
   
   flutter:
     sdk: flutter
@@ -43,6 +44,8 @@ dependencies:
   firebase_auth: ^4.17.7
   google_sign_in: ^6.2.1
   flutter_facebook_auth: '^3.5.0'
+  firebase_storage: ^11.6.9
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
