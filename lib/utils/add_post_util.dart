@@ -1,4 +1,5 @@
 // TODO Implement this library.
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 pickImage(ImageSource source) async {
@@ -10,4 +11,12 @@ pickImage(ImageSource source) async {
     return await _file.readAsBytes();
   }
   print("No Image Selected");
+}
+
+showSnackBar(BuildContext context, String text) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(text),
+    ),
+  );
 }
