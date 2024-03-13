@@ -1,4 +1,7 @@
+import 'dart:html';
 import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shieldy/model/post.dart';
 import 'package:shieldy/resources/storage_methods.dart';
