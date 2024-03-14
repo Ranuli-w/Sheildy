@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/HOmemain_container.dart';
@@ -7,7 +6,7 @@ import 'package:shieldy/widgets/HOmemain_container.dart';
 
 
 class Homepage extends StatelessWidget {
-  const Homepage({Key? key}) : super(key: key);
+  const Homepage({super.key});
 
   //Sign user out method
   void signUserOut() async {

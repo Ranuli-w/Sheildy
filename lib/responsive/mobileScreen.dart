@@ -12,7 +12,7 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int _page = 0;
-  late PageController pageController; //for the  tabs animation
+  late PageController pageController; //to get the  tabs animation
 
   @override
   void initState() {
@@ -37,6 +37,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     //Animating Page
     pageController.jumpToPage(page);
   }
+
+
+
+  
 
   @override
   Widget build(BuildContext context) {
