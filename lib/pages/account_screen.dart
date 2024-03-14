@@ -63,7 +63,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           BorderRadius.circular(50), // Half of width and height
                       child: Image.asset(
                         "images/Avatar1.png",
-                        width: 90,
+                        width:70,
                         height: 90,
                       ),
                     ),
