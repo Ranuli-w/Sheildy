@@ -8,7 +8,7 @@ import 'package:shieldy/pages/home.dart';
 const webScreenSize = 600;
 const homeScreenItems = [
   Text('feed'),
-  AddPostScreen(),
+  Homepage(),
 
   //const AddPostScreen(),
   //const Text('notifications'),
