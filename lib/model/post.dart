@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:html';
 
 class Post {
   final String description;
   final String uid;
-  final String usernameController;
+  final String username;
   final likes;
   final String postId;
   final datePublished;
@@ -14,7 +13,7 @@ class Post {
   const Post({
     required this.description,
     required this.uid,
-    required this.usernameController,
+    required this.username,
     required this.likes,
     required this.postId,
     required this.datePublished,
@@ -31,7 +30,7 @@ class Post {
         likes: snapshot["likes"],
         postId: snapshot["postId"],
         datePublished: snapshot["datePublished"],
-        usernameController: snapshot["username"],
+        username: snapshot["username"],
         postUrl: snapshot['postUrl'],
         profImage: snapshot['profImage']);
   }
@@ -40,7 +39,7 @@ class Post {
         "description": description,
         "uid": uid,
         "likes": likes,
-        "username": usernameController,
+        "username": username,
         "postId": postId,
         "datePublished": datePublished,
         'postUrl': postUrl,
