@@ -105,9 +105,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
         appBar: AppBar(
           backgroundColor: mobileBackgroundColor,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => _selectImage(context),
-          ),
+  icon: const Icon(Icons.arrow_back),
+  onPressed: () => Navigator.pop(context),
+),
+
+
           title: const Text('Publish Post'),
           centerTitle: false,
           actions: [

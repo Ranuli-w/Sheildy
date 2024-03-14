@@ -23,8 +23,8 @@ class AuthMethods {
   Future<String> signUpUser({
     required String email,
     required String password,
+    required String confirmPass,
     required String username,
-
     required Uint8List file,
   }) async {
     String res = "Some error Occurred";
@@ -32,7 +32,7 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          
+          password == confirmPass ||
           file != null) {
         // registering user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
@@ -48,7 +48,6 @@ class AuthMethods {
           uid: cred.user!.uid,
           photoUrl: photoUrl,
           email: email,
-         
         );
 
         // adding user in our database

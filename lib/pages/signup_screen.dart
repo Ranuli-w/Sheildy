@@ -3,26 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-
-
-
-
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
-
-
-
-
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
-
-
-
-
-
 import 'package:shieldy/utils/GlobalVariables.dart';
 import 'package:shieldy/widgets/textfeild.dart';
 
@@ -37,7 +24,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
   Uint8List? _image;
 
@@ -47,6 +34,7 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
+    _confirmPasswordController.dispose();
   }
 
   void signUpUser() async {
@@ -59,8 +47,8 @@ class _SignupScreenState extends State<SignupScreen> {
     String res = await AuthMethods().signUpUser(
         email: _emailController.text,
         password: _passwordController.text,
+        confirmPass: _confirmPasswordController.text,
         username: _usernameController.text,
-        
         file: _image!);
     // if string returned is sucess, user has been created
     if (res == "success") {
@@ -171,6 +159,14 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(
                 height: 24,
+              ),
+
+              //confirm password text field
+              Text_field_input(
+                hintText: 'Confirm your password',
+                textInputType: TextInputType.text,
+                textEditingController: _confirmPasswordController,
+                isPass: true,
               ),
               
               const SizedBox(
