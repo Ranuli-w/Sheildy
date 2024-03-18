@@ -13,6 +13,7 @@ import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'firebase_options.dart';
+import 'package:shieldy/pages/search_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

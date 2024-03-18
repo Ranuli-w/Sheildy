@@ -6,14 +6,14 @@ import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/utils/colors.dart';
 
 import 'package:shieldy/pages/home.dart';
-import 'package:shieldy/widgets/HOmemain_container.dart';
+import 'package:shieldy/pages/search_screen.dart';
 
 const webScreenSize = 600;
-const homeScreenItems = [
+var homeScreenItems = [
   Homepage(),
   Text('map'),
   AddPostScreen(),
-  Text('phone'),
+  SearchScreen(),
   AccountScreen(),
 
 

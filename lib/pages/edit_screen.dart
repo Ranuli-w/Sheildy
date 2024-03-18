@@ -26,6 +26,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   late TextEditingController _nicController;
   late File? _file;
   final _formKey = GlobalKey<FormState>();
+  Map<String, dynamic> userData = {};
 
   @override
   void initState() {
@@ -46,10 +47,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           .get();
 
       if (userSnapshot.exists) {
-        Map<String, dynamic> userData =
-            userSnapshot.data() as Map<String, dynamic>;
-
         setState(() {
+          userData = userSnapshot.data() as Map<String, dynamic>;
           _nameController.text = userData['Name'] ?? '';
           gender = userData['Gender'] ?? 'Man';
           _ageController.text =
@@ -161,11 +160,17 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                 width: 110,
                                 height: 110,
                               )
-                            : Image.asset(
-                                "images/Avatar1.png",
-                                width: 110,
-                                height: 110,
-                              ),
+                            : userData['Image'] != null
+                                ? Image.network(
+                                    userData['Image'],
+                                    width: 110,
+                                    height: 110,
+                                  )
+                                : Image.asset(
+                                    "images/Avatar1.png",
+                                    width: 110,
+                                    height: 110,
+                                  ),
                       ),
                       TextButton(
                         onPressed: () {
