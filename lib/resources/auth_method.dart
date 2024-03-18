@@ -53,6 +53,7 @@ class AuthMethods {
           uid: cred.user!.uid,
           photoUrl: photoUrl,
           email: email,
+         
         );
 
         // adding user in our database

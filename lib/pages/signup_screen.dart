@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+
+
+
+
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
+
+
+
+
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
@@ -35,7 +43,6 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
-    _confirmPasswordController.dispose();
   }
 
   void signUpUser() async {
@@ -185,14 +192,6 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(
                 height: 24,
-              ),
-
-              //confirm password text field
-              Text_field_input(
-                hintText: 'Confirm your password',
-                textInputType: TextInputType.text,
-                textEditingController: _confirmPasswordController,
-                isPass: true,
               ),
               
               const SizedBox(

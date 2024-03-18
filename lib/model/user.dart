@@ -12,7 +12,7 @@ class User {
       required this.uid,
       required this.photoUrl,
       required this.email,
-});
+      });
 
   static User fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -22,6 +22,7 @@ class User {
       uid: snapshot["uid"],
       email: snapshot["email"],
       photoUrl: snapshot["photoUrl"],
+      
     );
   }
 
@@ -30,5 +31,6 @@ class User {
         "uid": uid,
         "email": email,
         "photoUrl": photoUrl,
+        
       };
 }
