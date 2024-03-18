@@ -12,8 +12,11 @@ import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'firebase_options.dart';
+import 'package:shieldy/pages/search_screen.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 
 void main() async {
+  final Db db = Db('mongodb://localhost:27017');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MobileScreenLayout(), // Changed the home to WelcomePage
+      home: MobileScreenLayout(), // Changed the home to WelcomePage
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );

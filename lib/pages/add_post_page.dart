@@ -1,5 +1,6 @@
-
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
@@ -112,7 +113,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
           centerTitle: false,
           actions: [
             TextButton(
-              onPressed: () {},
               child: const Text(
                 'Publish',
                 style: TextStyle(
@@ -121,6 +121,53 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   fontSize: 16,
                 ),
               ),
+              onPressed: () async {
+                if (_file != null) {
+                  // Upload the photo to Firestore storage here
+                  // Replace 'your_bucket_name' with your actual bucket name
+                  String bucketName = 'Posts';
+                  String fileName = DateTime.now().toString() + '.jpg';
+                  String username = 'username'; // Replace with the actual username
+                  String uid = 'uid'; // Replace with the actual UID
+                  
+
+                  Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+                  UploadTask uploadTask = storageRef.putData(_file!);
+                  TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+                  String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+                  // Save the download URL to Firestore or perform any other necessary actions
+                  // Replace 'your_collection_name' with the actual collection name in Firestore
+                  String collectionName = 'Posts';
+                  FirebaseFirestore.instance.collection(collectionName).add({
+                    'image_url': downloadUrl,
+                    'username' : username,
+                    'UID' : uid, // Replace with the actual UID
+                    'description': _descriptionController.text,
+                    // Add any other fields you want to save
+                  });
+
+                  // Clear the selected file and description after successful upload
+                  setState(() {
+                    _file = null;
+                    _descriptionController.clear();
+                  });
+
+                  // Show a success message or perform any other necessary actions
+                  showSnackBar(context, 'Photo uploaded successfully');
+                } else {
+                  // Show an error message if no photo is selected
+                  showSnackBar(context, 'Please select a photo');
+                }
+              },
+              // child: const Text(
+              //   'Publish',
+              //   style: TextStyle(
+              //     color: Colors.blueAccent,
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 16,
+              //   ),
+              // ),
             ),
           ],
         ),
