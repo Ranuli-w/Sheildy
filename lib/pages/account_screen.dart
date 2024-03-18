@@ -8,7 +8,7 @@ import 'package:shieldy/widgets/setting_item.dart';
 import 'package:shieldy/widgets/setting_switch.dart';
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+  const AccountScreen({Key? key}) : super(key: key);
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();

@@ -10,10 +10,11 @@ import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
+import 'package:shieldy/utils/GlobalVariables.dart';
 import 'package:shieldy/widgets/textfeild.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
