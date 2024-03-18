@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 
 class FeedContainer extends StatelessWidget {
-  const FeedContainer({superKey, Key? key});
+  const FeedContainer({super.key, superKey, Key? customKey});
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +20,17 @@ class FeedContainer extends StatelessWidget {
                   vertical: 4,
                   horizontal: 18,
                 ).copyWith(right: 0),
-                child: Row(
+                child: const Row(
                   children: [
                     CircleAvatar(
                       radius: 16,
-                      backgroundImage: const NetworkImage(
+                      backgroundImage: NetworkImage(
                         'https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png',
                       ),
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: 7,
                         ),
                         child: Column(
@@ -53,7 +52,7 @@ class FeedContainer extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 8), // Add space here
+              const SizedBox(height: 8), // Add space here
             ],
           ),
         ),
@@ -106,15 +105,15 @@ class FeedContainer extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
                         '13likes',
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
-                    SizedBox(width: 10), // Add space between likes and dislikes
+                    const SizedBox(width: 10), // Add space between likes and dislikes
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
                         '13dislikes',
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ],
@@ -129,9 +128,9 @@ class FeedContainer extends StatelessWidget {
                   bottom: 4,
                 ),
                 child: RichText(
-                  text: TextSpan(
-                    style: const TextStyle(color: primaryColor),
-                    children: const [
+                  text: const TextSpan(
+                    style: TextStyle(color: primaryColor),
+                    children: [
                       TextSpan(
                         text: 'username',
                         style: TextStyle(
@@ -154,13 +153,13 @@ class FeedContainer extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
-                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),),
+                  child: const Text('5 comments',style:TextStyle(fontSize: 15,color: secondaryColor)),),
               ),
               Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
-                  child: Text('09/02/2024',style:const TextStyle(fontSize: 15,color: secondaryColor)),)
+                  child: const Text('09/02/2024',style:TextStyle(fontSize: 15,color: secondaryColor)),)
             ],
           ),
         ),

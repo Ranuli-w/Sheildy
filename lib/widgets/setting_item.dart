@@ -10,7 +10,7 @@ class SettingItem extends StatelessWidget {
   final String? value;
 
   const SettingItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.bgColor,
     required this.iconColor,
@@ -18,7 +18,7 @@ class SettingItem extends StatelessWidget {
     required this.onTap,
     this.value,
     required int iconSize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
