@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shieldy/pages/signup_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
@@ -6,14 +7,16 @@ import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/GlobalVariables.dart';
 import 'package:shieldy/utils/add_post_util.dart';
-
+import 'package:shieldy/utils/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:shieldy/utils/colors.dart';
+import 'package:shieldy/widgets/HOmemain_container.dart';
 import 'package:shieldy/widgets/textfeild.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shieldy/pages/home.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:shieldy/pages/account_screen.dart';
+import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/edit_item.dart';
 
 class EditAccountScreen extends StatefulWidget {
@@ -417,7 +419,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         validator: (value) {
                           Pattern pattern =
                               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                          RegExp regex = RegExp(pattern.toString());
+                          RegExp regex = new RegExp(pattern.toString());
                           if (!regex.hasMatch(value!)) {
                             return 'Enter Valid Email';
                           } else {
