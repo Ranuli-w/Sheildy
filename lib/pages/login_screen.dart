@@ -60,14 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const responsiveLayout(
                 mobileScreenLayout: MobileScreenLayout(),
                 webScreenLayout: webScreenLayout(),
               ),
             ),
-            );
+            (route) => false);
 
         setState(() {
           _isLoading = false;
@@ -113,6 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
+
+
               Text_field_input(
                 hintText: 'Enter your password',
                 textInputType: TextInputType.text,

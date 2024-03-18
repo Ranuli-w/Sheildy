@@ -24,6 +24,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _nicController = TextEditingController();
   bool _isLoading = false;
   Uint8List? _image;
 
@@ -48,6 +50,8 @@ class _SignupScreenState extends State<SignupScreen> {
         password: _passwordController.text,
         confirmPass: _confirmPasswordController.text,
         username: _usernameController.text,
+        age: _ageController.text,
+        nic: _nicController.text,
         file: _image!);
     // if string returned is sucess, user has been created
     if (res == "success") {
@@ -142,6 +146,29 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
+
+              
+              //Age
+              Text_field_input(
+                hintText: 'Age',
+                textInputType: TextInputType.text,
+                textEditingController: _ageController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+
+              //NIC
+              Text_field_input(
+                hintText: 'NIC',
+                textInputType: TextInputType.text,
+                textEditingController: _nicController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+
+
               Text_field_input(
                 hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,

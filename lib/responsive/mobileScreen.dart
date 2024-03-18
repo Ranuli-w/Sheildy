@@ -34,15 +34,19 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   }
 
   void getUsername() async {
-      DocumentSnapshot snap = await FirebaseFirestore.instance.collection("User_Details").doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
+  DocumentSnapshot? snap = await FirebaseFirestore.instance
+      .collection("User_Details")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .get();
 
-
-
+  if (snap != null && snap.exists) {
     setState(() {
       username = (snap.data() as Map<String, dynamic>)['username'];
     });
+  } else {
+    // Handle the case where data is null or does not exist
   }
+}
 
   @override
   void dispose() {

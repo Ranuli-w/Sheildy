@@ -7,6 +7,7 @@ import 'package:shieldy/resources/storage_methods.dart';
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final User currentUser = FirebaseAuth.instance.currentUser!;
 
   // get user details
   Future<model.User> getUserDetails() async {
@@ -26,12 +27,16 @@ class AuthMethods {
     required String confirmPass,
     required String username,
     required Uint8List file,
+    required String age,
+    required String nic,
   }) async {
     String res = "Some error Occurred";
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
+          age.isNotEmpty ||
+          nic.isNotEmpty ||
           password == confirmPass ||
           file != null) {
         // registering user in auth with email and password
