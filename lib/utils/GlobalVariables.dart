@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/add_post_page.dart';
+import 'package:shieldy/responsive/mobileScreen.dart';
+import 'package:shieldy/utils/colors.dart';
 
 import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/pages/search_screen.dart';

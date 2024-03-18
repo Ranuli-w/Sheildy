@@ -8,7 +8,7 @@ import 'package:shieldy/widgets/setting_item.dart';
 import 'package:shieldy/widgets/setting_switch.dart';
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+  const AccountScreen({Key? key}) : super(key: key);
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -63,8 +63,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           BorderRadius.circular(50), // Half of width and height
                       child: Image.asset(
                         "images/Avatar1.png",
-                        width:70,
-                        height: 90,
+                        width: 100,
+                        height: 100,
                       ),
                     ),
                     const SizedBox(width: 30),

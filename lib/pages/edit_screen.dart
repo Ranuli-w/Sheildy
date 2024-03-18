@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:shieldy/pages/account_screen.dart';
+import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/edit_item.dart';
 
 class EditAccountScreen extends StatefulWidget {
   final String initialName;
 
-  const EditAccountScreen({super.key, required this.initialName});
+  const EditAccountScreen({Key? key, required this.initialName})
+      : super(key: key);
 
   @override
   State<EditAccountScreen> createState() => _EditAccountScreenState();
@@ -14,12 +18,64 @@ class EditAccountScreen extends StatefulWidget {
 class _EditAccountScreenState extends State<EditAccountScreen> {
   String gender = "Man";
   late TextEditingController _nameController;
+  late TextEditingController _ageController;
+  late TextEditingController _emailController;
+  late TextEditingController _nicController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.initialName);
+    _ageController = TextEditingController();
+    _emailController = TextEditingController();
+    _nicController = TextEditingController();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('User_Details')
+          .doc('RGkggwaiKniHFnWAX17w')
+          .get();
+
+      if (userSnapshot.exists) {
+        Map<String, dynamic> userData =
+            userSnapshot.data() as Map<String, dynamic>;
+
+        setState(() {
+          _nameController.text = userData['Name'] ?? '';
+          gender = userData['Gender'] ?? 'Man';
+          _ageController.text =
+              userData['Age'] != null ? userData['Age'].toString() : '';
+          _emailController.text = userData['Email'] ?? '';
+          _nicController.text = userData['NIC'] ?? '';
+        });
+      } else {
+        print('User data not found');
+      }
+    } catch (error) {
+      print("Error fetching user data: $error");
+    }
+  }
+
+  Future<void> _updateUserData() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('User_Details')
+          .doc('RGkggwaiKniHFnWAX17w')
+          .update({
+        'Name': _nameController.text,
+        'Gender': gender,
+        'Age': int.tryParse(_ageController.text) ?? 0,
+        'Email': _emailController.text,
+        'NIC': _nicController.text,
+      });
+      print('User data updated successfully');
+    } catch (error) {
+      print('Error updating user data: $error');
+    }
   }
 
   @override
@@ -37,8 +93,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 40),
             child: IconButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
+                  await _updateUserData(); // Update the user data in Firestore
                   Navigator.pop(context, _nameController.text);
                 }
               },
@@ -177,9 +234,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     ),
                     const SizedBox(height: 50),
                     EditItem(
-                      title: "Address",
+                      title: "NIC",
                       widget: TextFormField(
                         style: const TextStyle(color: Colors.white),
+                        controller: _nicController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15), // Add padding
@@ -292,6 +350,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       title: "Age",
                       widget: TextFormField(
                         style: const TextStyle(color: Colors.white),
+                        controller: _ageController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15), // Add padding
@@ -332,6 +391,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       title: "E-mail",
                       widget: TextFormField(
                         style: const TextStyle(color: Colors.white),
+                        controller: _emailController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15), // Add padding
@@ -359,7 +419,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         validator: (value) {
                           Pattern pattern =
                               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                          RegExp regex = RegExp(pattern.toString());
+                          RegExp regex = new RegExp(pattern.toString());
                           if (!regex.hasMatch(value!)) {
                             return 'Enter Valid Email';
                           } else {
@@ -381,6 +441,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _ageController.dispose();
+    _emailController.dispose();
+    _nicController.dispose();
     super.dispose();
   }
 }

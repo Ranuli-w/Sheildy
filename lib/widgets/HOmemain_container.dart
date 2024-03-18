@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 
-class FeedContainer extends StatelessWidget {
-  const FeedContainer({super.key, superKey, Key? customKey});
+class FeedContainer extends StatefulWidget {
+  const FeedContainer({superKey, Key? key});
+
+  @override
+  _FeedContainerState createState() => _FeedContainerState();
+}
+
+class _FeedContainerState extends State<FeedContainer> {
+  bool thumbsUpSelected = false;
+  bool thumbsDownSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +28,17 @@ class FeedContainer extends StatelessWidget {
                   vertical: 4,
                   horizontal: 18,
                 ).copyWith(right: 0),
-                child: const Row(
+                child: Row(
                   children: [
                     CircleAvatar(
                       radius: 16,
-                      backgroundImage: NetworkImage(
+                      backgroundImage: const NetworkImage(
                         'https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png',
                       ),
                     ),
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: 7,
                         ),
                         child: Column(
@@ -52,7 +60,7 @@ class FeedContainer extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 8), // Add space here
+              SizedBox(height: 8), // Add space here
             ],
           ),
         ),
@@ -73,12 +81,28 @@ class FeedContainer extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.thumb_up),
+              onPressed: () {
+                setState(() {
+                  // Toggle thumbs-up icon
+                  thumbsUpSelected = !thumbsUpSelected;
+                  thumbsDownSelected = false; // Ensure only one is selected
+                });
+              },
+              icon: Icon(
+                thumbsUpSelected ? Icons.thumb_up : Icons.thumb_up_outlined,
+              ),
             ),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.thumb_down),
+              onPressed: () {
+                setState(() {
+                  // Toggle thumbs-down icon
+                  thumbsDownSelected = !thumbsDownSelected;
+                  thumbsUpSelected = false; // Ensure only one is selected
+                });
+              },
+              icon: Icon(
+                thumbsDownSelected ? Icons.thumb_down : Icons.thumb_down_outlined,
+              ),
             ),
             IconButton(
               onPressed: () {},
@@ -100,27 +124,24 @@ class FeedContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                  children: [
-                    DefaultTextStyle(
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
-                      child: Text(
-                        '13likes',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                children: [
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
+                    child: Text(
+                      '13likes',
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
-                    const SizedBox(width: 10), // Add space between likes and dislikes
-                    DefaultTextStyle(
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
-                      child: Text(
-                        '13dislikes',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                  ),
+                  SizedBox(width: 10), // Add space between likes and dislikes
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
+                    child: Text(
+                      '13dislikes',
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
-                  ],
-                ),
-
-              
-              
+                  ),
+                ],
+              ),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -128,16 +149,17 @@ class FeedContainer extends StatelessWidget {
                   bottom: 4,
                 ),
                 child: RichText(
-                  text: const TextSpan(
-                    style: TextStyle(color: primaryColor),
-                    children: [
+                  text: TextSpan(
+                    style: const TextStyle(color: primaryColor),
+                    children: const [
                       TextSpan(
                         text: 'username',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
-                      ),TextSpan(
-                        text: 'username hey this is the driscriptiuonj',
+                      ),
+                      TextSpan(
+                        text: 'username hey this is the description',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -146,20 +168,21 @@ class FeedContainer extends StatelessWidget {
                   ),
                 ),
               ),
-
               InkWell(
                 onTap: () {},
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
-                  child: const Text('5 comments',style:TextStyle(fontSize: 15,color: secondaryColor)),),
+                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),
+                ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                  ),
-                  child: const Text('09/02/2024',style:TextStyle(fontSize: 15,color: secondaryColor)),)
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                ),
+                child: Text('09/02/2024',style:const TextStyle(fontSize: 15,color: secondaryColor)),
+              )
             ],
           ),
         ),
@@ -167,7 +190,3 @@ class FeedContainer extends StatelessWidget {
     );
   }
 }
-
-
-
- 

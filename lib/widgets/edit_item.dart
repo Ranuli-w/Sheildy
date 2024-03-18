@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class EditItem extends StatelessWidget {
   final Widget widget;
   final String title;
   const EditItem({
-    super.key,
+    Key? key,
     required this.widget,
     required this.title,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class EditItem extends StatelessWidget {
           flex: 4,
           child: Padding(
             // Add Padding here
-            padding: const EdgeInsets.only(top: 20), // Adjust as needed
+            padding: EdgeInsets.only(top: 20), // Adjust as needed
             child: Text(
               title,
               style: const TextStyle(
