@@ -1,15 +1,14 @@
 import 'dart:typed_data';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
-import 'package:path_provider/path_provider.dart';
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({Key? key}) : super(key: key);
+  const AddPostScreen({super.key});
 
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
@@ -23,6 +22,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String uid,
     String username,
     String profImage,
+    String location,
   ) async {
     try {
       String res = await FirestoreMethods().uploadPost(
@@ -31,6 +31,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         uid,
         username,
         profImage,
+        
       );
 
       if (res == "success") {
@@ -105,16 +106,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
         appBar: AppBar(
           backgroundColor: mobileBackgroundColor,
           leading: IconButton(
-  icon: const Icon(Icons.arrow_back),
-  onPressed: () => Navigator.pop(context),
-),
-
-
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => _selectImage(context),
+          ),
           title: const Text('Publish Post'),
           centerTitle: false,
           actions: [
             TextButton(
-              onPressed: () {},
               child: const Text(
                 'Publish',
                 style: TextStyle(
@@ -123,6 +121,47 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   fontSize: 16,
                 ),
               ),
+              onPressed: () async {
+                if (_file != null) {
+                  // Upload the photo to Firestore storage here
+                  // Replace 'your_bucket_name' with your actual bucket name
+                  String bucketName = 'Posts';
+                  String fileName = DateTime.now().toString() + '.jpg';
+                  Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+                  UploadTask uploadTask = storageRef.putData(_file!);
+                  TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+                  String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+                  // Save the download URL to Firestore or perform any other necessary actions
+                  // Replace 'your_collection_name' with the actual collection name in Firestore
+                  String collectionName = 'your_collection_name';
+                  FirebaseFirestore.instance.collection(collectionName).add({
+                    'image_url': downloadUrl,
+                    'description': _descriptionController.text,
+                    // Add any other fields you want to save
+                  });
+
+                  // Clear the selected file and description after successful upload
+                  setState(() {
+                    _file = null;
+                    _descriptionController.clear();
+                  });
+
+                  // Show a success message or perform any other necessary actions
+                  showSnackBar(context, 'Photo uploaded successfully');
+                } else {
+                  // Show an error message if no photo is selected
+                  showSnackBar(context, 'Please select a photo');
+                }
+              },
+              // child: const Text(
+              //   'Publish',
+              //   style: TextStyle(
+              //     color: Colors.blueAccent,
+              //     fontWeight: FontWeight.bold,
+              //     fontSize: 16,
+              //   ),
+              // ),
             ),
           ],
         ),

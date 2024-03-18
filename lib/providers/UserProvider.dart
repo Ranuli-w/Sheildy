@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' as model;
+
 
 import 'package:flutter/widgets.dart';
 import 'package:shieldy/resources/auth_method.dart';

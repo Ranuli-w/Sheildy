@@ -27,6 +27,8 @@ class FirestoreMethods {
       Position position = await _determinePosition();
       String location = "${position.latitude}, ${position.longitude}";
 
+
+
       Post post = Post(
         description: description,
         uid: uid,

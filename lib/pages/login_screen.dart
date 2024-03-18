@@ -27,25 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // Check if the user is already signed in
-    checkUserLoggedIn();
-  }
-
-  void checkUserLoggedIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (isLoggedIn) {
-      // If user is already logged in, navigate to home screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => Homepage(),
-        ),
-      );
-    }
-  }
+  
 
 
   @override
@@ -116,6 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
+
+
               Text_field_input(
                 hintText: 'Enter your password',
                 textInputType: TextInputType.text,
