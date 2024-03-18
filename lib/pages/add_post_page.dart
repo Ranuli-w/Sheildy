@@ -1,15 +1,13 @@
+
 import 'dart:typed_data';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
-import 'package:path_provider/path_provider.dart';
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({Key? key}) : super(key: key);
+  const AddPostScreen({super.key});
 
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
@@ -23,6 +21,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String uid,
     String username,
     String profImage,
+    String location,
   ) async {
     try {
       String res = await FirestoreMethods().uploadPost(
@@ -31,6 +30,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         uid,
         username,
         profImage,
+        
       );
 
       if (res == "success") {

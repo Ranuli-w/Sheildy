@@ -41,7 +41,7 @@ class Homepage extends StatelessWidget {
         // Implement the action when the profile icon is pressed
       },
     ),
-    Spacer(),
+    const Spacer(),
 
     IconButton(
       icon: const Icon(Icons.notifications_none),
