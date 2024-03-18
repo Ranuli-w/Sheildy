@@ -177,7 +177,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     ),
                     const SizedBox(height: 50),
                     EditItem(
-                      title: "Address",
+                      title: "NIC",
                       widget: TextFormField(
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(

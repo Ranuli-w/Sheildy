@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-
- // Import the WelcomePage class
+// Import the WelcomePage class
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/providers/UserProvider.dart';
 import 'package:shieldy/utils/colors.dart';
@@ -24,14 +24,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-
-
-      providers: [
-        ChangeNotifierProvider(create: (_)=>UserProvider())
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const LoginScreen(), // Changed the home to WelcomePage
+        home: AccountScreen(), // Changed the home to WelcomePage
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
       ),
