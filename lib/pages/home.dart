@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/HOmemain_container.dart';
 
@@ -9,8 +11,19 @@ class Homepage extends StatelessWidget {
   const Homepage({super.key});
 
   //Sign user out method
-  void signUserOut() async {
+  Future<void> signUserOut(BuildContext context) async {
+    // Clear the authentication state from shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
+    
     await FirebaseAuth.instance.signOut();
+
+    // Navigate back to login screen
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -39,8 +52,11 @@ class Homepage extends StatelessWidget {
 
     //Sign out button
     IconButton(
-      onPressed: signUserOut,
       icon: const Icon(Icons.logout),
+      onPressed: () async {
+        await signUserOut(context);
+      },
+      
     ),
   ],
       ),
