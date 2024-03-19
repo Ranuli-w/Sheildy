@@ -29,6 +29,9 @@ environment:
 # versions available, run flutter pub outdated.
 dependencies:
   cloud_firestore: ^4.7.0
+  flutter_map: ^6.1.0
+  latlng: any
+  
  
   uuid: ^4.3.3
   firebase_core: ^2.25.4
