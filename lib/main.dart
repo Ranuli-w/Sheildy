@@ -8,6 +8,7 @@ import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/add_post_page.dart';
 import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/pages/login_screen.dart';
+import 'package:shieldy/pages/map.dart';
 import 'package:shieldy/providers/UserProvider.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // Changed the home to WelcomePage
+      home: Mappage(), // Changed the home to WelcomePage
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );
