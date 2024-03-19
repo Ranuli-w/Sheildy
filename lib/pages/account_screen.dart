@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:shieldy/pages/edit_screen.dart';
@@ -18,6 +19,24 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isDarkMode = false;
   bool isSwitched = false;
   String name = ''; // Default name
+  String imageUrl = ''; // Default image URL
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('User_Details')
+        .doc('RGkggwaiKniHFnWAX17w')
+        .get();
+    setState(() {
+      name = doc['Name'];
+      imageUrl = doc['Image'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +80,18 @@ class _AccountScreenState extends State<AccountScreen> {
                     ClipRRect(
                       borderRadius:
                           BorderRadius.circular(50), // Half of width and height
-                      child: Image.asset(
-                        "images/Avatar1.png",
-                        width: 100,
-                        height: 100,
-                      ),
+                      child: imageUrl != ''
+                          ? Image.network(
+                              imageUrl,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              "images/Avatar1.png",
+                              width: 100,
+                              height: 100,
+                            ),
                     ),
                     const SizedBox(width: 30),
                     Column(

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:shieldy/pages/account_screen.dart';
-import 'package:shieldy/utils/colors.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/widgets/edit_item.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
 
 class EditAccountScreen extends StatefulWidget {
   final String initialName;
@@ -21,7 +24,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   late TextEditingController _ageController;
   late TextEditingController _emailController;
   late TextEditingController _nicController;
+  late File? _file;
   final _formKey = GlobalKey<FormState>();
+  Map<String, dynamic> userData = {};
 
   @override
   void initState() {
@@ -30,6 +35,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     _ageController = TextEditingController();
     _emailController = TextEditingController();
     _nicController = TextEditingController();
+    _file = null;
     fetchUserData();
   }
 
@@ -41,10 +47,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           .get();
 
       if (userSnapshot.exists) {
-        Map<String, dynamic> userData =
-            userSnapshot.data() as Map<String, dynamic>;
-
         setState(() {
+          userData = userSnapshot.data() as Map<String, dynamic>;
           _nameController.text = userData['Name'] ?? '';
           gender = userData['Gender'] ?? 'Man';
           _ageController.text =
@@ -62,6 +66,21 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   Future<void> _updateUserData() async {
     try {
+      String imageUrl = '';
+      if (_file != null) {
+        // Create a reference to the location you want to upload to in firebase
+        Reference reference = FirebaseStorage.instance
+            .ref()
+            .child('images/${path.basename(_file!.path)}');
+
+        // Upload the file to firebase
+        UploadTask uploadTask = reference.putFile(_file!);
+
+        // Waits till the file is uploaded then stores the download url
+        TaskSnapshot taskSnapshot = await uploadTask;
+        imageUrl = await taskSnapshot.ref.getDownloadURL();
+      }
+
       await FirebaseFirestore.instance
           .collection('User_Details')
           .doc('RGkggwaiKniHFnWAX17w')
@@ -71,6 +90,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         'Age': int.tryParse(_ageController.text) ?? 0,
         'Email': _emailController.text,
         'NIC': _nicController.text,
+        'Image': imageUrl, // Add the image url to the database
       });
       print('User data updated successfully');
     } catch (error) {
@@ -99,15 +119,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   Navigator.pop(context, _nameController.text);
                 }
               },
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                fixedSize: const Size(50, 30),
-                elevation: 2,
-              ),
-              icon: const Icon(Ionicons.checkmark, color: Colors.black),
+              icon: const Icon(Ionicons.checkmark, color: Colors.blue),
             ),
           ),
         ],
@@ -128,307 +140,344 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    EditItem(
-                      title: "Photo",
-                      widget: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                80), // Half of width and height
-                            child: Image.asset(
-                              "images/Avatar1.png",
-                              width: 110,
-                              height: 110,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext bc) {
-                                  return SafeArea(
-                                    child: Container(
-                                      child: Wrap(
-                                        children: <Widget>[
-                                          ListTile(
-                                            leading:
-                                                const Icon(Icons.photo_library),
-                                            title: const Text('Gallery'),
-                                            onTap: () {
-                                              // Implement functionality for photo library
-                                            },
-                                          ),
-                                          ListTile(
-                                            leading:
-                                                const Icon(Icons.photo_camera),
-                                            title: const Text('Camera'),
-                                            onTap: () {
-                                              // Implement functionality for camera
-                                            },
-                                          ),
-                                        ],
+                const SizedBox(height: 20),
+                EditItem(
+                  title: "Photo",
+                  widget: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          80,
+                        ), // Half of width and height
+                        child: _file != null
+                            ? Image.file(
+                                _file!,
+                                width: 110,
+                                height: 110,
+                              )
+                            : userData['Image'] != null
+                                ? Image.network(
+                                    userData['Image'],
+                                    width: 110,
+                                    height: 110,
+                                  )
+                                : Image.asset(
+                                    "images/Avatar1.png",
+                                    width: 110,
+                                    height: 110,
+                                  ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext bc) {
+                              return SafeArea(
+                                child: Container(
+                                  child: Wrap(
+                                    children: <Widget>[
+                                      ListTile(
+                                        leading: Icon(Icons.photo_library),
+                                        title: Text('Gallery'),
+                                        onTap: () async {
+                                          Navigator.of(context).pop();
+                                          final picker = ImagePicker();
+                                          final pickedFile =
+                                              await picker.pickImage(
+                                                  source: ImageSource.gallery);
+                                          if (pickedFile != null) {
+                                            setState(() {
+                                              _file = File(pickedFile.path);
+                                            });
+                                          }
+                                        },
                                       ),
-                                    ),
-                                  );
-                                },
+                                      ListTile(
+                                        leading: Icon(Icons.photo_camera),
+                                        title: Text('Camera'),
+                                        onTap: () async {
+                                          Navigator.of(context).pop();
+                                          final picker = ImagePicker();
+                                          final pickedFile =
+                                              await picker.pickImage(
+                                                  source: ImageSource.camera);
+                                          if (pickedFile != null) {
+                                            setState(() {
+                                              _file = File(pickedFile.path);
+                                            });
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
                             },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.lightBlueAccent,
-                              textStyle: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            child: const Text("Upload Image"),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    EditItem(
-                      title: "Name",
-                      widget: TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15), // Add padding
-                          labelText: '',
-                          labelStyle: const TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Colors.black,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.lightBlueAccent,
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          return null;
-                        },
+                        child: const Text("Upload Image"),
                       ),
-                    ),
-                    const SizedBox(height: 50),
-                    EditItem(
-                      title: "NIC",
-                      widget: TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: _nicController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15), // Add padding
-                          labelText: '',
-                          labelStyle: const TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Colors.black,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
-                          ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 50),
+                EditItem(
+                  title: "Name",
+                  widget: TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ), // Add padding
+                      labelText: '',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.black,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          25.0,
+                        ), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a valid street address, city, state';
-                          }
-                          return null;
-                        },
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          25.0,
+                        ), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    EditItem(
-                      title: "Gender",
-                      widget: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(height: 50),
+                EditItem(
+                  title: "NIC",
+                  widget: TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    controller: _nicController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ), // Add padding
+                      labelText: '',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.black,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          25.0,
+                        ), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          25.0,
+                        ), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a valid street address, city, state';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(height: 50),
+                EditItem(
+                  title: "Gender",
+                  widget: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: gender == "Male"
+                              ? Colors.blue
+                              : Colors.grey.shade200,
+                          borderRadius:
+                              BorderRadius.circular(60), // Make it round
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Border color
+                              width: 2, // Border width
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(60), // Make it round
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                gender = "Male";
+                              });
+                            },
+                            icon: Icon(
+                              Ionicons.male,
                               color: gender == "Male"
-                                  ? Colors.blue
-                                  : Colors.grey.shade200,
-                              borderRadius:
-                                  BorderRadius.circular(60), // Make it round
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.white, // Border color
-                                  width: 2, // Border width
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(60), // Make it round
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    gender = "Male";
-                                  });
-                                },
-                                icon: Icon(
-                                  Ionicons.male,
-                                  color: gender == "Male"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  size: 18,
-                                ),
-                              ),
+                                  ? Colors.white
+                                  : Colors.black,
+                              size: 18,
                             ),
                           ),
-                          const SizedBox(width: 50),
-                          Container(
-                            decoration: BoxDecoration(
+                        ),
+                      ),
+                      const SizedBox(width: 50),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: gender == "Female"
+                              ? const Color.fromARGB(255, 252, 89, 143)
+                              : Colors.grey.shade200,
+                          borderRadius:
+                              BorderRadius.circular(60), // Make it round
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white, // Border color
+                              width: 2, // Border width
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(60), // Make it round
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                gender = "Female";
+                              });
+                            },
+                            icon: Icon(
+                              Ionicons.female,
                               color: gender == "Female"
-                                  ? const Color.fromARGB(255, 252, 89, 143)
-                                  : Colors.grey.shade200,
-                              borderRadius:
-                                  BorderRadius.circular(60), // Make it round
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.white, // Border color
-                                  width: 2, // Border width
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(60), // Make it round
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    gender = "Female";
-                                  });
-                                },
-                                icon: Icon(
-                                  Ionicons.female,
-                                  color: gender == "Female"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  size: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    EditItem(
-                      title: "Age",
-                      widget: TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: _ageController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15), // Add padding
-                          labelText: '',
-                          labelStyle: const TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Colors.black,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
+                                  ? Colors.white
+                                  : Colors.black,
+                              size: 18,
                             ),
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your age';
-                          } else if (int.tryParse(value) == null) {
-                            return 'Please enter a valid integer';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.number,
                       ),
-                    ),
-                    const SizedBox(height: 50),
-                    EditItem(
-                      title: "E-mail",
-                      widget: TextFormField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15), // Add padding
-                          labelText: '',
-                          labelStyle: const TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Colors.black,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // Increase border radius
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 1, // Increase border width
-                            ),
-                          ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 50),
+                EditItem(
+                  title: "Age",
+                  widget: TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    controller: _ageController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ), // Add padding
+                      labelText: '',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.black,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          25.0,
+                        ), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
                         ),
-                        validator: (value) {
-                          Pattern pattern =
-                              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                          RegExp regex = new RegExp(pattern.toString());
-                          if (!regex.hasMatch(value!)) {
-                            return 'Enter Valid Email';
-                          } else {
-                            return null;
-                          }
-                        },
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          25.0,
+                        ), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
+                        ),
                       ),
                     ),
-                  ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your age';
+                      } else if (int.tryParse(value) == null) {
+                        return 'Please enter a valid integer';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                const SizedBox(height: 50),
+                EditItem(
+                  title: "E-mail",
+                  widget: TextFormField(
+                    style: const TextStyle(color: Colors.white),
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15), // Add padding
+                      labelText: '',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.black,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                            25.0), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                            25.0), // Increase border radius
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1, // Increase border width
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      Pattern pattern =
+                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                      RegExp regex = new RegExp(pattern.toString());
+                      if (!regex.hasMatch(value!)) {
+                        return 'Enter Valid Email';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

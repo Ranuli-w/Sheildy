@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 // Import the WelcomePage class
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/add_post_page.dart';
+import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/providers/UserProvider.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
@@ -13,10 +15,8 @@ import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'firebase_options.dart';
 import 'package:shieldy/pages/search_screen.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 void main() async {
-  final Db db = Db('mongodb://localhost:27017');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
