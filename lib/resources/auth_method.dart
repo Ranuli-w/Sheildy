@@ -7,7 +7,6 @@ import 'package:shieldy/resources/storage_methods.dart';
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final User currentUser = FirebaseAuth.instance.currentUser!;
 
   // get user details
   Future<model.User> getUserDetails() async {
@@ -53,7 +52,6 @@ class AuthMethods {
           uid: cred.user!.uid,
           photoUrl: photoUrl,
           email: email,
-         
         );
 
         // adding user in our database
@@ -72,7 +70,8 @@ class AuthMethods {
     return res;
   }
 
-  // logging in user
+  //logging in user
+
   Future<String> loginUser({
     required String email,
     required String password,

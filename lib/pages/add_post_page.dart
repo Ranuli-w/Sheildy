@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
@@ -115,62 +117,54 @@ class _AddPostScreenState extends State<AddPostScreen> {
           centerTitle: false,
           actions: [
             TextButton(
-              child: const Text(
-                'Publish',
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              onPressed: () async {
-                if (_file != null) {
-                  // Upload the photo to Firestore storage here
-                  // Replace 'your_bucket_name' with your actual bucket name
-                  String bucketName = 'Posts';
-                  String fileName = DateTime.now().toString() + '.jpg';
-                  String username = 'username'; // Replace with the actual username
-                  String uid = 'uid'; // Replace with the actual UID
-                  
+  child: const Text(
+    'Publish',
+    style: TextStyle(
+      color: Colors.blueAccent,
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    ),
+  ),
+  onPressed: () async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (_file != null && user != null) { // Combine the conditions here
+      // Upload the photo to Firestore storage here
+      String fileName = DateTime.now().toString() + '.jpg';
+      String username = user.displayName ?? '';
+      String folderPath = 'uploaded_posts/$username/photos';
+      Reference storageRef = FirebaseStorage.instance.ref().child(folderPath).child(fileName);
+      UploadTask uploadTask = storageRef.putData(_file!);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
-                  Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
-                  UploadTask uploadTask = storageRef.putData(_file!);
-                  TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-                  String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      // Get the UID
+      String uid = user.uid;
 
-                  // Save the download URL to Firestore or perform any other necessary actions
-                  // Replace 'your_collection_name' with the actual collection name in Firestore
-                  String collectionName = 'Posts';
-                  FirebaseFirestore.instance.collection(collectionName).add({
-                    'image_url': downloadUrl,
-                    'username' : username,
-                    'UID' : uid, // Replace with the actual UID
-                    'description': _descriptionController.text,
-                    // Add any other fields you want to save
-                  });
+      // Save the download URL to Firestore
+      String collectionName = 'Posts';
+      FirebaseFirestore.instance.collection(collectionName).add({
+        'image_url': downloadUrl,
+        'username': user.displayName,
+        'UID': uid,
+        'description': _descriptionController.text,
+        // Add any other fields you want to save
+      });
 
-                  // Clear the selected file and description after successful upload
-                  setState(() {
-                    _file = null;
-                    _descriptionController.clear();
-                  });
+      // Clear the selected file and description after successful upload
+      setState(() {
+        _file = null;
+        _descriptionController.clear();
+      });
 
-                  // Show a success message or perform any other necessary actions
-                  showSnackBar(context, 'Photo uploaded successfully');
-                } else {
-                  // Show an error message if no photo is selected
-                  showSnackBar(context, 'Please select a photo');
-                }
-              },
-              // child: const Text(
-              //   'Publish',
-              //   style: TextStyle(
-              //     color: Colors.blueAccent,
-              //     fontWeight: FontWeight.bold,
-              //     fontSize: 16,
-              //   ),
-              // ),
-            ),
+      // Show a success message or perform any other necessary actions
+      showSnackBar(context, 'Photo uploaded successfully');
+    } else {
+      // Show an error message if no photo is selected or user is null
+      showSnackBar(context, 'Please select a photo and ensure you are logged in');
+    }
+  },
+),
+
           ],
         ),
         body: Column(
