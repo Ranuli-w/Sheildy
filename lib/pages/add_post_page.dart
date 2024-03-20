@@ -139,14 +139,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
       // Get the UID
       String uid = user.uid;
+      
 
       // Save the download URL to Firestore
       String collectionName = 'Posts';
       FirebaseFirestore.instance.collection(collectionName).add({
         'image_url': downloadUrl,
-        'username': user.displayName,
+        'username': username,
         'UID': uid,
         'description': _descriptionController.text,
+        
         // Add any other fields you want to save
       });
 
