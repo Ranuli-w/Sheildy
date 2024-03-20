@@ -8,6 +8,7 @@ import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/add_post_page.dart';
 import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/pages/login_screen.dart';
+import 'package:shieldy/pages/map.dart';
 import 'package:shieldy/providers/UserProvider.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/responsive/responsiveLayout.dart';
