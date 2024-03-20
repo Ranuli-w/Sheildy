@@ -43,8 +43,8 @@ class FeedContainer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              //snap['username'],
-                              'Username',
+                              snap['username'],
+                              //'Username',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -70,7 +70,7 @@ class FeedContainer extends StatelessWidget {
           child: ClipRRect(
             //borderRadius: BorderRadius.circular(20), // Set the desired border radius
             child: Image.network(
-              snap['image_url'],
+              snap['postUrl'],
               // 'https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
               fit: BoxFit.cover,
             ),
@@ -111,8 +111,8 @@ class FeedContainer extends StatelessWidget {
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
-                        // '${snap['likes'].length}likes'
-                        'likes',
+                         '${snap['likes'].length}likes',
+                        //'likes',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
@@ -120,7 +120,8 @@ class FeedContainer extends StatelessWidget {
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
-                        '13dislikes',
+                        '${snap['dislikes'].length}dislikes',
+                        //'13dislikes',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
@@ -172,8 +173,8 @@ class FeedContainer extends StatelessWidget {
                   vertical: 4,
                 ),
                 child: Text(
-                  //DateFormat .yMMMd().format(snap['datePublished'].toDate()),
-                  '09/02/2024',
+                  DateFormat .yMMMd().format(snap['datePublished'].toDate()),
+                  //'09/02/2024',
 
                     style:
                         const TextStyle(fontSize: 15, color: secondaryColor)),

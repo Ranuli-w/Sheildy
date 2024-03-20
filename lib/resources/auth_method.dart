@@ -50,7 +50,7 @@ class AuthMethods {
         model.User user = model.User(
           username: username,
           uid: cred.user!.uid,
-          photoUrl: photoUrl,
+          profImage: photoUrl,
           email: email,
         );
 
