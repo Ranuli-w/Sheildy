@@ -1,10 +1,10 @@
 import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shieldy/model/post.dart';
 import 'package:shieldy/resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
-import 'package:geolocator/geolocator.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -19,7 +19,7 @@ class FirestoreMethods {
     String res = 'some error occured';
     try {
       String photoUrl =
-          await StorageMethods().uploadImageToStorage('posts', file, true);
+          await StorageMethods().uploadImageToStorage('Posts', file, true);
 
       String postId = const Uuid().v1();
 
@@ -41,7 +41,7 @@ class FirestoreMethods {
         dislikes: [],
         location: location,
       );
-      await _firestore.collection('posts').doc(postId).set(
+      await _firestore.collection('Posts').doc(postId).set(
             post.toJson(),
           );
       res = "success";

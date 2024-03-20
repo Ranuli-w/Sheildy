@@ -111,7 +111,7 @@ class FeedContainer extends StatelessWidget {
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
-                         '${snap['likes'].length}likes',
+                        '${snap['likes'].length}likes',
                         //'likes',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
@@ -382,8 +382,3 @@ class _FeedContainerState extends State<FeedContainer> {
     );
   }
 }*/
-
-
-
-
- 
