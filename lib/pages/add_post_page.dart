@@ -1,16 +1,15 @@
 import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
+import 'package:shieldy/resources/storage_methods.dart';
 import 'package:shieldy/utils/add_post_util.dart';
 import 'package:shieldy/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({super.key});
+  const AddPostScreen({Key? key});
 
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
@@ -19,21 +18,36 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
+  String? _userLocation;
+  String? username = FirebaseAuth.instance.currentUser?.displayName;
+
+
+  Future<void> getUserLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        _userLocation = "${position.latitude}, ${position.longitude}";
+      });
+    } catch (e) {
+      print("Error getting location: $e");
+    }
+  }
 
   Future<void> postImage(
     String uid,
-    String username,
-    String profImage,
+    String photoUrl,
     String location,
+    String use,
   ) async {
     try {
       String res = await FirestoreMethods().uploadPost(
         _descriptionController.text,
         _file!,
         uid,
-        username,
-        profImage,
-        
+        photoUrl,
+        username ?? '',
       );
 
       if (res == "success") {
@@ -42,50 +56,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
         showSnackBar(context, res);
       }
     } catch (err) {
-      showSnackBar(context, toString());
+      showSnackBar(context, err.toString());
     }
   }
 
-  _selectImage(BuildContext context) async {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: const Text('Create a Post'),
-          children: [
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Take A Photo'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.camera);
-                setState(() {
-                  _file = file;
-                });
-              },
-            ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Choose From Gallery'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.gallery);
-                setState(() {
-                  _file = file;
-                });
-              },
-            ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  _selectImage(BuildContext context, ImageSource source) async {
+    Navigator.of(context).pop();
+    Uint8List file = await pickImage(source);
+    setState(() {
+      _file = file;
+    });
   }
 
   @override
@@ -100,7 +80,29 @@ class _AddPostScreenState extends State<AddPostScreen> {
       return Center(
         child: IconButton(
           icon: const Icon(Icons.upload),
-          onPressed: () => _selectImage(context),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => SimpleDialog(
+              title: const Text('Create a Post'),
+              children: [
+                SimpleDialogOption(
+                  padding: const EdgeInsets.all(20),
+                  child: const Text('Take A Photo'),
+                  onPressed: () => _selectImage(context, ImageSource.camera),
+                ),
+                SimpleDialogOption(
+                  padding: const EdgeInsets.all(20),
+                  child: const Text('Choose From Gallery'),
+                  onPressed: () => _selectImage(context, ImageSource.gallery),
+                ),
+                SimpleDialogOption(
+                  padding: const EdgeInsets.all(20),
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          ),
         ),
       );
     } else {
@@ -109,7 +111,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           backgroundColor: mobileBackgroundColor,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => _selectImage(context),
+            onPressed: () => setState(() => _file = null),
           ),
           title: const Text('Publish Post'),
           centerTitle: false,
@@ -124,53 +126,41 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
               ),
               onPressed: () async {
-                if (_file != null) {
-                  // Upload the photo to Firestore storage here
-                  // Replace 'your_bucket_name' with your actual bucket name
-                  String bucketName = 'Posts';
-                  String fileName = DateTime.now().toString() + '.jpg';
-                  String username = 'username'; // Replace with the actual username
-                  String uid = 'uid'; // Replace with the actual UID
-                  
+                User? user = FirebaseAuth.instance.currentUser;
+                if (_file != null && user != null) {
+                  if (_userLocation == null) {
+                    await getUserLocation();
+                  }
+                  if (_userLocation != null) {
+                    String fileName = DateTime.now().toString() + '.jpg';
+                    String username = user.displayName ?? '';
+                    String folderPath = 'uploaded_posts/$username/photos';
+                    String downloadUrl = await StorageMethods()
+                        .uploadImageToStorage(folderPath, _file!, true);
 
-                  Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
-                  UploadTask uploadTask = storageRef.putData(_file!);
-                  TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-                  String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+                    await FirestoreMethods().uploadPost(
+                      _descriptionController.text,
+                      _file!,
+                      user.uid,
+                      downloadUrl,
+                      username,
+                    );
 
-                  // Save the download URL to Firestore or perform any other necessary actions
-                  // Replace 'your_collection_name' with the actual collection name in Firestore
-                  String collectionName = 'Posts';
-                  FirebaseFirestore.instance.collection(collectionName).add({
-                    'image_url': downloadUrl,
-                    'username' : username,
-                    'UID' : uid, // Replace with the actual UID
-                    'description': _descriptionController.text,
-                    // Add any other fields you want to save
-                  });
+                    setState(() {
+                      _file = null;
+                      _descriptionController.clear();
+                    });
 
-                  // Clear the selected file and description after successful upload
-                  setState(() {
-                    _file = null;
-                    _descriptionController.clear();
-                  });
-
-                  // Show a success message or perform any other necessary actions
-                  showSnackBar(context, 'Photo uploaded successfully');
+                    showSnackBar(context, 'Photo uploaded successfully');
+                  } else {
+                    showSnackBar(context, 'Failed to fetch user location');
+                  }
                 } else {
-                  // Show an error message if no photo is selected
-                  showSnackBar(context, 'Please select a photo');
+                  showSnackBar(context,
+                      'Please select a photo and ensure you are logged in');
                 }
               },
-              // child: const Text(
-              //   'Publish',
-              //   style: TextStyle(
-              //     color: Colors.blueAccent,
-              //     fontWeight: FontWeight.bold,
-              //     fontSize: 16,
-              //   ),
-              // ),
-            ),
+            )
           ],
         ),
         body: Column(
