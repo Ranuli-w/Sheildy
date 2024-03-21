@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/colors.dart';
 
-class FeedContainer extends StatelessWidget {
+class FeedContainer extends StatefulWidget {
 
   final snap;
   const FeedContainer({ Key? key,required this.snap,}):super(key:key);
 
+  @override
+  State<FeedContainer> createState() => _FeedContainerState();
+}
+
+class _FeedContainerState extends State<FeedContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,7 +48,7 @@ class FeedContainer extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              snap['username'],
+                              widget.snap['username'],
                               //'Username',
                               style: TextStyle(
                                 color: Colors.white,
@@ -70,7 +75,7 @@ class FeedContainer extends StatelessWidget {
           child: ClipRRect(
             //borderRadius: BorderRadius.circular(20), // Set the desired border radius
             child: Image.network(
-              snap['postUrl'],
+              widget.snap['postUrl'],
               // 'https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
               fit: BoxFit.cover,
             ),
@@ -111,7 +116,7 @@ class FeedContainer extends StatelessWidget {
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
-                        '${snap['likes'].length}likes',
+                        '${widget.snap['likes'].length}likes',
                         //'likes',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
@@ -120,7 +125,7 @@ class FeedContainer extends StatelessWidget {
                     DefaultTextStyle(
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
                       child: Text(
-                        '${snap['dislikes'].length}dislikes',
+                        '${widget.snap['dislikes'].length}dislikes',
                         //'13dislikes',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
@@ -142,7 +147,7 @@ class FeedContainer extends StatelessWidget {
                     children:  [
                       TextSpan(
                         
-                        text: 
+                        text:
                         //snap:['username'],
                         
                         'username',
@@ -150,7 +155,7 @@ class FeedContainer extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),TextSpan(
-                        text: snap['description'],
+                        text: widget.snap['description'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -173,7 +178,7 @@ class FeedContainer extends StatelessWidget {
                   vertical: 4,
                 ),
                 child: Text(
-                  DateFormat .yMMMd().format(snap['datePublished'].toDate()),
+                  DateFormat .yMMMd().format(widget.snap['datePublished'].toDate()),
                   //'09/02/2024',
 
                     style:
