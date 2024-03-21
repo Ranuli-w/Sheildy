@@ -7,19 +7,19 @@ import 'package:shieldy/widgets/CommentSection.dart';
 import '../utils/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class FeedContainer extends StatefulWidget {
-
   // ignore: prefer_typing_uninitialized_variables
   final snap;
-  const FeedContainer({ super.key,required this.snap,});
+  const FeedContainer({
+    super.key,
+    required this.snap,
+  });
 
   @override
   State<FeedContainer> createState() => _FeedContainerState();
 }
 
 class _FeedContainerState extends State<FeedContainer> {
-
   bool isLiked = false;
   bool isDisliked = false;
   final FirestoreMethods _firestoreMethods = FirestoreMethods();
@@ -27,59 +27,62 @@ class _FeedContainerState extends State<FeedContainer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          color: mobileBackgroundColor,
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-          ),
-          child: Column(
-            children: [
-              Container(
+        StreamBuilder<Object>(
+            stream: null,
+            builder: (context, snapshot) {
+              return Container(
+                color: mobileBackgroundColor,
                 padding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 18,
-                ).copyWith(right: 0),
-                child: Row(
+                  vertical: 10,
+                ),
+                child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 16,
-                      backgroundImage:  NetworkImage(
-                        widget.snap['profImage'],
-                        
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 7,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.snap['username'],
-                              
-                              //'Username',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 18,
+                      ).copyWith(right: 0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 16,
+                            backgroundImage: NetworkImage(
+                              widget.snap['profImage'],
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 7,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.snap['username'],
+
+                                    //'Username',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
+                    SizedBox(height: 8), // Add space here
                   ],
                 ),
-              ),
-              SizedBox(height: 8), // Add space here
-            ],
-          ),
-        ),
+              );
+            }),
 
-        // Add the image here
+        //Add the image here
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.30,
           width: double.infinity,
@@ -88,16 +91,11 @@ class _FeedContainerState extends State<FeedContainer> {
             child: Image.network(
               widget.snap['postUrl'],
 
-
-
-              
-              // 'https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              //       // 'https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
               fit: BoxFit.cover,
             ),
           ),
         ),
-
-
 
         Row(
           children: [
@@ -106,17 +104,32 @@ class _FeedContainerState extends State<FeedContainer> {
                 final uid = FirebaseAuth.instance.currentUser!.uid;
                 setState(() {
                   isLiked = !isLiked;
+                  isDisliked = false; // Reset dislike state when liking
                 });
-                await _firestoreMethods.updateLikes(
+                await _firestoreMethods.updateLikesAndDislikes(
                   widget.snap['postId'],
                   isLiked,
+                  isDisliked,
                 );
-
-
               },
               icon: isLiked
-                  ? const Icon(Icons.arrow_upward,color: Colors.red)
-                  : const Icon(Icons.arrow_upward_outlined),
+                  ? Icon(Icons.arrow_upward,
+                      color: Colors
+                          .green) // Change color to green when isLiked is true
+                  : Icon(Icons.arrow_upward_outlined),
+            ),
+            SizedBox(
+                width:
+                    0), // Add horizontal space between like button and like count
+            DefaultTextStyle(
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: FontWeight.w700),
+              child: Text(
+                '${widget.snap['likes'].length}',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
             ),
             IconButton(
               onPressed: () async {
@@ -132,20 +145,31 @@ class _FeedContainerState extends State<FeedContainer> {
                 );
               },
               icon: isDisliked
-                  ? const Icon(Icons.arrow_downward,
+                  ? Icon(Icons.arrow_downward,
                       color: Colors
                           .red) // Change color to red when isDisliked is true
                   : Icon(Icons.arrow_downward_outlined),
             ),
-
-            
-            
+            SizedBox(
+                width:
+                    0), // Add horizontal space between dislike button and dislike count
+            DefaultTextStyle(
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: FontWeight.w700),
+              child: Text(
+                '${widget.snap['dislikes'].length}',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+            SizedBox(width: 20),
             IconButton(
               icon: const Icon(Icons.chat_bubble_outline),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => CommentSection(
-                    postId: widget.snap['postId'].toString(), 
+                    postId: widget.snap['postId'].toString(),
                     //username: widget.snap['username'].toString(),
                   ),
                 ),
@@ -155,12 +179,77 @@ class _FeedContainerState extends State<FeedContainer> {
               onPressed: () {},
               icon: const Icon(Icons.share_outlined),
             ),
+
+            //   IconButton(
+            // onPressed: _sharePost,
+            // icon: const Icon(Icons.share_outlined),
+//),
             IconButton(
               onPressed: _openMapWithLocation,
               icon: const Icon(Icons.location_on_outlined),
             ),
           ],
         ),
+
+        // Row(
+        //   children: [
+        //     IconButton(
+        //       onPressed: () async {
+        //         final uid = FirebaseAuth.instance.currentUser!.uid;
+        //         setState(() {
+        //           isLiked = !isLiked;
+        //         });
+        //         await _firestoreMethods.updateLikes(
+        //           widget.snap['postId'],
+        //           isLiked,
+        //         );
+
+        //       },
+        //       icon: isLiked
+        //           ? const Icon(Icons.arrow_upward,color: Colors.red)
+        //           : const Icon(Icons.arrow_upward_outlined),
+        //     ),
+        //     IconButton(
+        //       onPressed: () async {
+        //         final uid = FirebaseAuth.instance.currentUser!.uid;
+        //         setState(() {
+        //           isDisliked = !isDisliked;
+        //           isLiked = false; // Reset like state when disliking
+        //         });
+        //         await _firestoreMethods.updateLikesAndDislikes(
+        //           widget.snap['postId'],
+        //           isLiked,
+        //           isDisliked,
+        //         );
+        //       },
+        //       icon: isDisliked
+        //           ? const Icon(Icons.arrow_downward,
+        //               color: Colors
+        //                   .red) // Change color to red when isDisliked is true
+        //           : Icon(Icons.arrow_downward_outlined),
+        //     ),
+
+        //     IconButton(
+        //       icon: const Icon(Icons.chat_bubble_outline),
+        //       onPressed: () => Navigator.of(context).push(
+        //         MaterialPageRoute(
+        //           builder: (context) => CommentSection(
+        //             postId: widget.snap['postId'].toString(),
+        //             //username: widget.snap['username'].toString(),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     IconButton(
+        //       onPressed: () {},
+        //       icon: const Icon(Icons.share_outlined),
+        //     ),
+        //     IconButton(
+        //       onPressed: _openMapWithLocation,
+        //       icon: const Icon(Icons.location_on_outlined),
+        //     ),
+        //   ],
+        // ),
         Container(
           padding: const EdgeInsets.symmetric(
             vertical: 0.01,
@@ -170,36 +259,34 @@ class _FeedContainerState extends State<FeedContainer> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  SizedBox(width: 2),
-                  DefaultTextStyle(
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.w700),
-                    child: Text(
-                      '${widget.snap['likes'].length}',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ),
-                  const SizedBox(width: 40), // Add horizontal space here
-                  DefaultTextStyle(
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontWeight: FontWeight.w700),
-                    child: Text(
-                      '${widget.snap['dislikes'].length}',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ),
-                ],
+              // Row(
+              //   children: [
+              //     SizedBox(width: 2),
+              //     DefaultTextStyle(
+              //       style: Theme.of(context)
+              //           .textTheme
+              //           .bodyMedium!
+              //           .copyWith(fontWeight: FontWeight.w700),
+              //       child: Text(
+              //         '${widget.snap['likes'].length}',
+              //         style: Theme.of(context).textTheme.bodyText2,
+              //       ),
+              //     ),
+              //     const SizedBox(width: 40), // Add horizontal space here
+              //     DefaultTextStyle(
+              //       style: Theme.of(context)
+              //           .textTheme
+              //           .bodyMedium!
+              //           .copyWith(fontWeight: FontWeight.w700),
+              //       child: Text(
+              //         '${widget.snap['dislikes'].length}',
+              //         style: Theme.of(context).textTheme.bodyText2,
+              //       ),
+              //     ),
+              //   ],
 
-                ),
+              //   ),
 
-              
-              
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -209,21 +296,20 @@ class _FeedContainerState extends State<FeedContainer> {
                 child: RichText(
                   text: TextSpan(
                     style: const TextStyle(color: primaryColor),
-                    children:  [
+                    children: [
                       TextSpan(
-                        
-                        text: 
-                        widget.snap['username'],
-                        
+                        text: widget.snap['username'],
+
                         //'username',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
-                      ),TextSpan(
-                        text: ' ${widget.snap['description']}',
+                      ),
+                      TextSpan(
+                        text: '  ${widget.snap['description']}',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                            //fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ],
                   ),
@@ -236,17 +322,21 @@ class _FeedContainerState extends State<FeedContainer> {
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
-                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),),
+                  child: Text('5 comments',
+                      style:
+                          const TextStyle(fontSize: 15, color: secondaryColor)),
+                ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 4,
                 ),
                 child: Text(
-                  DateFormat .yMMMd().format(widget.snap['datePublished'].toDate()),
-                  //'09/02/2024',
-                  
-                  //'09/02/2024',
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
+                    //'09/02/2024',
+
+                    //'09/02/2024',
 
                     style:
                         const TextStyle(fontSize: 15, color: secondaryColor)),
@@ -257,10 +347,12 @@ class _FeedContainerState extends State<FeedContainer> {
       ],
     );
   }
+
   Future<void> _openMapWithLocation() async {
     final location = widget.snap['location'];
     if (location != null) {
-      final query = Uri.encodeComponent('${location.split(',')[0]},${location.split(',')[1]}');
+      final query = Uri.encodeComponent(
+          '${location.split(',')[0]},${location.split(',')[1]}');
       final url = 'https://www.google.com/maps/search/?api=1&query=$query';
       await canLaunchUrl(Uri.parse(url))
           ? await launchUrl(Uri.parse(url))
