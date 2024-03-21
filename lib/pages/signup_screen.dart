@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shieldy/components/square_tile.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/utils/add_post_util.dart';
@@ -212,6 +213,30 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                   ),
                 ),
+
+                const SizedBox(height: 15),
+
+                //Google and Facebook Buttons
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    //Google Button
+                    SquareTile(
+                      onTap:() => AuthMethods().signInWithGoogle(),
+                      imagePath: 'images/google.png'),
+
+                    SizedBox(width: 25),
+
+                    //Facebook Button
+                    SquareTile(
+                      onTap: () => AuthMethods().signInWithFacebook(),
+                      imagePath: 'images/facebook.png'),
+                  ],
+                ),
+
+              const SizedBox(height: 10),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

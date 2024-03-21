@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shieldy/model/user.dart' as model;
 import 'package:shieldy/resources/storage_methods.dart';
 
@@ -113,6 +115,39 @@ class AuthMethods {
     return res;
   }
 
+  //Google Sign In
+  signInWithGoogle() async {
+    //begin interactive sign in process
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // obtain auth details from request
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+    // create a new credential for user
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    //final, sign in
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+
+  //Facebook Sign In
+  signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+  }
+
+  //signing out user
   Future<void> signOut() async {
     await _auth.signOut();
   }
