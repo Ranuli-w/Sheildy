@@ -69,7 +69,7 @@ class _MappageState extends State<Mappage> {
         side: BorderSide(color: Colors.white, width: 2), // Add this
         foregroundColor: Colors.black,
         fixedSize: Size(300, 50),
-        backgroundColor: Colors.blue,
+        backgroundColor: blueColor,
       ),
       onPressed: () {
         gotoMap();
@@ -89,7 +89,7 @@ class _MappageState extends State<Mappage> {
           side: BorderSide(color: Colors.white, width: 2), // Add this
           fixedSize: Size(300, 50),
           foregroundColor: Colors.black,
-          backgroundColor: Colors.blue,
+          backgroundColor: blueColor
         ),
         onPressed: () {
           getUserLocation();
