@@ -18,6 +18,23 @@ class AuthMethods {
     return model.User.fromSnap(documentSnapshot);
   }
 
+      // get user username
+    Future<String> getUserUsername() async {
+      User currentUser = _auth.currentUser!;
+      DocumentSnapshot documentSnapshot =
+          await _firestore.collection('User_Details').doc(currentUser.uid).get();
+      return documentSnapshot.get('username');
+    }
+
+
+      // get user profile image URL
+    Future<String> getUserProfileImageUrl() async {
+      User currentUser = _auth.currentUser!;
+      DocumentSnapshot documentSnapshot =
+          await _firestore.collection('User_Details').doc(currentUser.uid).get();
+      return documentSnapshot.get('photoUrl');
+    }
+
   // Signing Up User
 
   Future<String> signUpUser({
@@ -50,8 +67,10 @@ class AuthMethods {
         model.User user = model.User(
           username: username,
           uid: cred.user!.uid,
-          profImage: photoUrl,
+          photoUrl: photoUrl,
           email: email,
+          nic : nic,
+          age: age,
         );
 
         // adding user in our database

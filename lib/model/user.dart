@@ -3,15 +3,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   final String email;
   final String uid;
-  final String profImage;
+  final String photoUrl;
   final String username;
+  final String age;
+  final String nic;
 
 
   const User(
       {required this.username,
       required this.uid,
-      required this.profImage,
+      required this.photoUrl,
       required this.email,
+      required this.age,
+      required this.nic,
       });
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -21,7 +25,9 @@ class User {
       username: snapshot["username"],
       uid: snapshot["uid"],
       email: snapshot["email"],
-      profImage: snapshot["profImage"],
+      photoUrl: snapshot["photoUrl"],
+      age: snapshot["age"],
+      nic: snapshot["nic"],
       
     );
   }
@@ -30,7 +36,9 @@ class User {
         "username": username,
         "uid": uid,
         "email": email,
-        "profImage": profImage,
+        "photoUrl": photoUrl,
+        "age": age,
+        "nic": nic,
         
       };
 }

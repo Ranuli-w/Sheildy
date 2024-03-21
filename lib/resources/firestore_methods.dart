@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shieldy/model/post.dart';
+import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,8 +15,7 @@ class FirestoreMethods {
     String description,
     Uint8List file,
     String uid,
-    String username,
-    String profImage,
+    String postUrl,
   ) async {
     String res = 'some error occured';
     try {
@@ -27,6 +27,10 @@ class FirestoreMethods {
       // Fetch current location
       Position position = await _determinePosition();
       String location = "${position.latitude}, ${position.longitude}";
+       // Get current user's username
+      String username = (await AuthMethods().getUserDetails()).username;
+      // Get current user's profile image
+      String profImage = await AuthMethods().getUserProfileImageUrl();
 
 
 

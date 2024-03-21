@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import '../utils/colors.dart';
+
 
 class FeedContainer extends StatefulWidget {
 
@@ -55,6 +57,7 @@ class _FeedContainerState extends State<FeedContainer> {
                           children: [
                             Text(
                               widget.snap['username'],
+                              
                               //'Username',
                               style: TextStyle(
                                 color: Colors.white,
@@ -138,9 +141,6 @@ class _FeedContainerState extends State<FeedContainer> {
               icon: const Icon(Icons.chat_bubble_outline),
             ),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.share),
-            ),IconButton(
               onPressed: () {},
               icon: const Icon(Icons.share),
             ),

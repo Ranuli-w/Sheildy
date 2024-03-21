@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -5,6 +8,7 @@ import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/HOmemain_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Mappage extends StatefulWidget {
   const Mappage({Key? key}) : super(key: key);
@@ -18,6 +22,13 @@ class _MappageState extends State<Mappage> {
   String lat = "";
   String lng = "";
   bool isLoading = false;
+  Set<Marker> _markers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPosts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,64 +51,131 @@ class _MappageState extends State<Mappage> {
   }
 
   Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _getMapButton(),
-            SizedBox(
-              height: 20,
-            ),
-            _getLocationButton(),
-            SizedBox(
-              height: 20,
-            ),
-            displayLocation()
-          ],
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target:
+                LatLng(0, 0), // Initial position, you might want to change this
+            zoom: 14.4746,
+          ),
+          markers: _markers,
         ),
-      ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: 50.0), // Adjust this value as needed
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0),
+                        spreadRadius: 1,
+                        blurRadius: 20,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0), // Add this line
+                    child: Image.asset("images/map.png"),
+                  ),
+                ),
+              ),
+              _getMapButton(),
+              SizedBox(
+                height: 20,
+              ),
+              _getLocationButton(),
+              SizedBox(
+                height: 20,
+              ),
+              displayLocation()
+            ],
+          ),
+        )
+      ],
     );
   }
 
   Widget _getMapButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        side: BorderSide(color: Colors.white, width: 2), // Add this
-        foregroundColor: Colors.black,
-        fixedSize: Size(300, 50),
-        backgroundColor: blueColor,
+    return Container(
+      margin: EdgeInsets.only(bottom: 20.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
-      onPressed: () {
-        gotoMap();
-      },
-      child: Text(
-        "Go to Google Map",
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+          backgroundColor: Colors.blue,
+          side: BorderSide(color: Colors.white, width: 2.0), // Add this line
+        ),
+        onPressed: () {
+          gotoMap();
+        },
+        child: Text(
+          "Go to Google Map",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
 
   Widget _getLocationButton() {
-    return Tooltip(
-      message: 'Click to get your current location',
-      child: ElevatedButton.icon(
+    return Container(
+      margin: EdgeInsets.only(bottom: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: Offset(0, 3),
+          ),
+        ],
+        border: Border.all(
+          color: Colors.white, // Set border color
+          width: 3.0, // Set border width
+        ),
+      ),
+      child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          side: BorderSide(color: Colors.white, width: 2), // Add this
-          fixedSize: Size(300, 50),
-          foregroundColor: Colors.black,
-          backgroundColor: blueColor
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+          backgroundColor: Colors.blue,
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(10.0), // Set the button's border radius
+          ),
         ),
         onPressed: () {
           getUserLocation();
         },
-        icon: const Icon(Icons.location_on),
-        label: Text(
-          "Get Location",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.location_on),
+            SizedBox(width: 10),
+            Text(
+              "Get Location",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
@@ -154,70 +232,51 @@ class _MappageState extends State<Mappage> {
 
   Widget displayLocation() {
     if (isLoading) {
-      return LinearProgressIndicator();
+      return CircularProgressIndicator(
+        color: Colors.blue,
+      );
     } else {
       return Container(
+        margin: EdgeInsets.only(bottom: 20.0),
+        padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Colors.blue, Colors.blueAccent],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20.0),
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.withOpacity(0.5),
+              color: Colors.white.withOpacity(0),
               spreadRadius: 2,
               blurRadius: 5,
               offset: Offset(0, 3),
             ),
           ],
           border: Border.all(
-            // Add this
-            color: Colors.white,
-            width: 3.0,
+            color: Colors.white, // Set border color
+            width: 3.0, // Set border width
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                result,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Latitude: $lat",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Longitude: $lng",
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "Place: $result",
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              result,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Latitude: $lat",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Longitude: $lng",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Place: $result",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       );
     }
@@ -240,5 +299,22 @@ class _MappageState extends State<Mappage> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  void _fetchPosts() async {
+    final posts = await FirebaseFirestore.instance.collection('Posts').get();
+    final newMarkers = <Marker>{};
+    for (final post in posts.docs) {
+      final lat = post.data()['lat']; // Replace 'lat' with your actual key
+      final lng = post.data()['lng']; // Replace 'lng' with your actual key
+      final marker = Marker(
+        markerId: MarkerId(post.id),
+        position: LatLng(lat, lng),
+      );
+      newMarkers.add(marker);
+    }
+    setState(() {
+      _markers = newMarkers;
+    });
   }
 }
