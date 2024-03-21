@@ -224,14 +224,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     //Google Button
                     SquareTile(
-                      onTap:() => AuthMethods().signInWithGoogle(),
+                      onTap:() => AuthMethods().signInWithGoogle(context),
                       imagePath: 'images/google.png'),
 
                     SizedBox(width: 25),
 
                     //Facebook Button
                     SquareTile(
-                      onTap: () => AuthMethods().signInWithFacebook(),
+                      onTap: () => AuthMethods().signInWithFacebook(context),
                       imagePath: 'images/facebook.png'),
                   ],
                 ),

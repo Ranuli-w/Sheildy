@@ -1,10 +1,14 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shieldy/model/user.dart' as model;
+import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/resources/storage_methods.dart';
+import 'package:shieldy/responsive/mobileScreen.dart';
 
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -115,40 +119,103 @@ class AuthMethods {
     return res;
   }
 
-  //Google Sign In
-  signInWithGoogle() async {
-    //begin interactive sign in process
+  signInWithGoogle(BuildContext context) async {
+  try {
+    // Begin interactive sign-in process
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // obtain auth details from request
+    // Obtain auth details from the request
     final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
 
-    // create a new credential for user
+    // Create a new credential for the user
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    //final, sign in
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    // Sign in with the Google credential
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // Check if the user exists in Firestore
+    DocumentSnapshot userDoc = await _firestore.collection('User_Details').doc(userCredential.user!.uid).get();
+
+    if (!userDoc.exists) {
+      // Create a new user document in Firestore
+      String username = userCredential.user!.displayName ?? '';
+      String photoUrl = userCredential.user!.photoURL ?? '';
+
+      model.User user = model.User(
+        username: username,
+        uid: userCredential.user!.uid,
+        photoUrl: photoUrl,
+        email: userCredential.user!.email!,
+        age: '',
+        nic: '',
+      );
+
+      await _firestore.collection('User_Details').doc(userCredential.user!.uid).set(user.toJson());
+    }
+
+    // Navigate to the home screen or desired screen
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => MobileScreenLayout(), // Replace with your desired screen
+      ),
+    );
+  } catch (e) {
+    print('Error signing in with Google: $e');
   }
+}
 
 
-  //Facebook Sign In
-  signInWithFacebook() async {
+  signInWithFacebook(BuildContext context) async {
+  try {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
     // Create a credential from the access token
     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    // Once signed in, return the UserCredential
-    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    // Sign in with the Facebook credential
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
+    // Check if the user exists in Firestore
+    DocumentSnapshot userDoc = await _firestore.collection('User_Details').doc(userCredential.user!.uid).get();
+
+    if (!userDoc.exists) {
+      // Create a new user document in Firestore
+      String username = userCredential.user!.displayName ?? '';
+      String photoUrl = userCredential.user!.photoURL ?? '';
+
+      model.User user = model.User(
+        username: username,
+        uid: userCredential.user!.uid,
+        photoUrl: photoUrl,
+        email: userCredential.user!.email!,
+        age: '',
+        nic: '',
+      );
+
+      await _firestore.collection('User_Details').doc(userCredential.user!.uid).set(user.toJson());
+    }
+
+    // Navigate to the home screen or desired screen
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => MobileScreenLayout(), // Replace with your desired screen
+      ),
+    );
+  } catch (e) {
+    print('Error signing in with Facebook: $e');
   }
+}
+
+
+
 
   //signing out user
   Future<void> signOut() async {
     await _auth.signOut();
+    await GoogleSignIn().signOut();
   }
 }
