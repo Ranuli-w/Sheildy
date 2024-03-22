@@ -90,12 +90,18 @@ class Homepage extends StatelessWidget {
             );
           }
           return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) => FeedContainer(
-              snap: snapshot.data!.docs[index].data(),
-
-            ),
-          );
+  itemCount: snapshot.data!.docs.length,
+  itemBuilder: (context, index) {
+    // Sort the list of documents by the number of likes
+    final sortedDocs = snapshot.data!.docs.toList()
+      ..sort((a, b) => (b['likes'] as List).length.compareTo((a['likes'] as List).length));
+    
+    return FeedContainer(
+      snap: sortedDocs[index].data(),
+    );
+  },
+);
+;
         },
       ),
     );
