@@ -21,8 +21,8 @@ class Homepage extends StatelessWidget {
       builder: (context) {
         return Dialog(
           child: Container(
-            padding: const EdgeInsets.all(16),
-            child: const Column(
+            padding: EdgeInsets.all(16),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(),
@@ -49,8 +49,6 @@ class Homepage extends StatelessWidget {
             },
           ),
           Spacer(),
-
-          
 
           IconButton(
             icon: const Icon(Icons.notifications_none),

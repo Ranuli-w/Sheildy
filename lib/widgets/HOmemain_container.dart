@@ -1,28 +1,18 @@
-// e:/flutterapps/SHEILDY2.0/Sheildy/lib/widgets/HOmemain_container.dart
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shieldy/model/post.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
-import 'package:shieldy/widgets/CommentSection.dart';
 import '../utils/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:shieldy/widgets/share.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 //import 'package:share_plus/share_plus.dart';
 
 class FeedContainer extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
+
   final snap;
-  const FeedContainer({
-    super.key,
-    required this.snap,
-  });
+  const FeedContainer({ Key? key,required this.snap,}):super(key:key);
 
   @override
   State<FeedContainer> createState() => _FeedContainerState();
@@ -36,60 +26,57 @@ class _FeedContainerState extends State<FeedContainer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        StreamBuilder<Object>(
-            stream: null,
-            builder: (context, snapshot) {
-              return Container(
-                color: mobileBackgroundColor,
+        Container(
+          color: mobileBackgroundColor,
+          padding: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
+          child: Column(
+            children: [
+              Container(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                ),
-                child: Column(
+                  vertical: 4,
+                  horizontal: 18,
+                ).copyWith(right: 0),
+                child: Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 18,
-                      ).copyWith(right: 0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 16,
-                            backgroundImage: NetworkImage(
-                              widget.snap['profImage'],
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 7,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.snap['username'],
-
-                                    //'Username',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundImage:  NetworkImage(
+                        widget.snap['profImage'],
+                        
                       ),
                     ),
-                    SizedBox(height: 8), // Add space here
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 7,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.snap['username'],
+                              
+                              //'Username',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              );
-            }),
+              ),
+              SizedBox(height: 8), // Add space here
+            ],
+          ),
+        ),
 
         //Add the image here
         SizedBox(
@@ -159,43 +146,14 @@ class _FeedContainerState extends State<FeedContainer> {
                           .red) // Change color to red when isDisliked is true
                   : Icon(Icons.arrow_downward_outlined),
             ),
-            SizedBox(
-                width:
-                    0), // Add horizontal space between dislike button and dislike count
-            DefaultTextStyle(
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontWeight: FontWeight.w700),
-              child: Text(
-                '${widget.snap['dislikes'].length}',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-            ),
-            SizedBox(width: 20),
+
             IconButton(
+              onPressed: () {},
               icon: const Icon(Icons.chat_bubble_outline),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CommentSection(
-                    postId: widget.snap['postId'].toString(),
-                    //username: widget.snap['username'].toString(),
-                  ),
-                ),
-              ),
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.share_outlined),
-            ),
-
-//          IconButton(
-//   onPressed: () => _sharePost(widget.snap['postUrl']),
-//   icon: const Icon(Icons.share_outlined),
-// ),
-            IconButton(
-              onPressed: _openMapWithLocation,
-              icon: const Icon(Icons.location_on_outlined),
+              icon: const Icon(Icons.share),
             ),
           ],
         ),
@@ -268,31 +226,25 @@ class _FeedContainerState extends State<FeedContainer> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row(
-              //   children: [
-              //     SizedBox(width: 2),
-              //     DefaultTextStyle(
-              //       style: Theme.of(context)
-              //           .textTheme
-              //           .bodyMedium!
-              //           .copyWith(fontWeight: FontWeight.w700),
-              //       child: Text(
-              //         '${widget.snap['likes'].length}',
-              //         style: Theme.of(context).textTheme.bodyText2,
-              //       ),
-              //     ),
-              //     const SizedBox(width: 40), // Add horizontal space here
-              //     DefaultTextStyle(
-              //       style: Theme.of(context)
-              //           .textTheme
-              //           .bodyMedium!
-              //           .copyWith(fontWeight: FontWeight.w700),
-              //       child: Text(
-              //         '${widget.snap['dislikes'].length}',
-              //         style: Theme.of(context).textTheme.bodyText2,
-              //       ),
-              //     ),
-              //   ],
+              Row(
+                  children: [
+                    SizedBox(width: 2),
+  DefaultTextStyle(
+    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
+    child: Text(
+      '${widget.snap['likes'].length}',
+      style: Theme.of(context).textTheme.bodyText2,
+    ),
+  ),
+  SizedBox(width: 40), // Add horizontal space here
+  DefaultTextStyle(
+    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
+    child: Text(
+      '${widget.snap['dislikes'].length}',
+      style: Theme.of(context).textTheme.bodyText2,
+    ),
+  ),
+],
 
               //   ),
 
@@ -356,123 +308,200 @@ class _FeedContainerState extends State<FeedContainer> {
       ],
     );
   }
+}
+/*import 'package:flutter/material.dart';
+import '../utils/colors.dart';
 
-  Future<void> _openMapWithLocation() async {
-    final location = widget.snap['location'];
-    if (location != null) {
-      final query = Uri.encodeComponent(
-          '${location.split(',')[0]},${location.split(',')[1]}');
-      final url = 'https://www.google.com/maps/search/?api=1&query=$query';
-      await canLaunchUrl(Uri.parse(url))
-          ? await launchUrl(Uri.parse(url))
-          : throw 'Could not launch $url';
-    }
-  }
+class FeedContainer extends StatefulWidget {
 
+  final snap;
+  const FeedContainer({ Key? key,required this.snap,}):super(key:key);
 
-//     Future<void> _sharePost(String postUrl) async {
-//   final shareOptions = [
-//     'Copy Link',
-//     'Share on Instagram',
-//     'Share on WhatsApp',
-//     'Share on Telegram',
-//     'Share via Email',
-//   ];
-//   final selected = await showDialog<int>(
-//     context: context,
-//     builder: (context) {
-//       return AlertDialog(
-//         title: const Text('Share'),
-//         content: Column(
-//           children: shareOptions
-//               .asMap()
-//               .entries
-//               .map(
-//                 (entry) => ListTile(
-//                   title: Text(entry.value),
-//                   onTap: () => Navigator.pop(context, entry.key),
-//                 ),
-//               )
-//               .toList(),
-//         ),
-//       );
-//     },
-//   );
-
-  // if (selected != null) {
-  //   switch (selected) {
-  //     case 0:
-  //       await Clipboard.setData(ClipboardData(text: postUrl));
-  //       break;
-  //     case 1:
-  //       await Share.share(postUrl, subject: 'Check out this post!');
-  //       break;
-  //     case 2:
-  //       await Share.share(postUrl, subject: 'Check out this post!');
-  //       break;
-  //     case 3:
-  //       await Share.share(postUrl, subject: 'Check out this post!');
-  //       break;
-  //     case 4:
-  //       await Share.share(postUrl, subject: 'Check out this post!');
-  //       break;
-  //   }
-  // }
-// }
-
-
-Future<void> sendEmailForHighLikes(Post post) async {
-  final likes = post.likes.length;
-  if (likes > 5) {
-    final emailBody = '''
-Description: ${post.description}
-Location: ${post.location}
-Post URL: ${post.postUrl}
-''';
-
-    final emailSubject = 'TO INFORM  A THREAT';
-    final smtpServer = 'smtp.example.com';
-    final smtpPort = 587;
-    final smtpUsername = 'tOPsECRETS';
-    final smtpPassword = 'tOPsECRETS123';
-    final recipientEmail = '	rnd@rda.gov.lk';
-
-    final message = '''
-From: 	topsecrets.gpt@gmail.com
-To: $recipientEmail
-Subject: $emailSubject
-
-$emailBody
-''';
-
-    final socket = await Socket.connect(smtpServer, smtpPort);
-    socket.listen((data) {
-      print(String.fromCharCodes(data));
-    });
-
-    socket.write('HELO\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('AUTH LOGIN\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('${base64.encode(utf8.encode(smtpUsername))}\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('${base64.encode(utf8.encode(smtpPassword))}\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('MAIL FROM:<sender@example.com>\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('RCPT TO:<$recipientEmail>\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('DATA\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write(message);
-    socket.write('\n.\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.write('QUIT\n');
-    await Future.delayed(const Duration(seconds: 1));
-    socket.destroy();
-  }
+  @override
+  _FeedContainerState createState() => _FeedContainerState();
 }
 
+class _FeedContainerState extends State<FeedContainer> {
+  bool thumbsUpSelected = false;
+  bool thumbsDownSelected = false;
 
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          color: mobileBackgroundColor,
+          padding: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 18,
+                ).copyWith(right: 0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundImage:  NetworkImage(
+                        //snap['photoUrl'],
+                        'https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png',
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 7,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              //snap['username'],
+                              'Username',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8), // Add space here
+            ],
+          ),
+        ),
 
-}
+        // Add the image here
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.30,
+          width: double.infinity,
+          child: ClipRRect(
+            //borderRadius: BorderRadius.circular(20), // Set the desired border radius
+            child: Image.network(snap['image_url'],
+              // 'https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  // Toggle thumbs-up icon
+                  thumbsUpSelected = !thumbsUpSelected;
+                  thumbsDownSelected = false; // Ensure only one is selected
+                });
+              },
+              icon: Icon(
+                thumbsUpSelected ? Icons.thumb_up : Icons.thumb_up_outlined,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  // Toggle thumbs-down icon
+                  thumbsDownSelected = !thumbsDownSelected;
+                  thumbsUpSelected = false; // Ensure only one is selected
+                });
+              },
+              icon: Icon(
+                thumbsDownSelected ? Icons.thumb_down : Icons.thumb_down_outlined,
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.comment),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.send),
+            ),
+          ],
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 4,
+            horizontal: 18,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
+                    child: Text(
+                      '13likes',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ),
+                  SizedBox(width: 10), // Add space between likes and dislikes
+                  DefaultTextStyle(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700),
+                    child: Text(
+                      '13dislikes',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(
+                  top: 4,
+                  bottom: 4,
+                ),
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(color: primaryColor),
+                    children: const [
+                      TextSpan(
+                        text: 'username',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'username hey this is the description',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                  ),
+                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                ),
+                child: Text('09/02/2024',style:const TextStyle(fontSize: 15,color: secondaryColor)),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}*/

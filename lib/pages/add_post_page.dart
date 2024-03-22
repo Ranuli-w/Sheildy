@@ -21,6 +21,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   String? _userLocation;
   String? username = FirebaseAuth.instance.currentUser?.displayName;
 
+
   Future<void> getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
