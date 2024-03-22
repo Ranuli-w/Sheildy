@@ -1,7 +1,11 @@
 // e:/flutterapps/SHEILDY2.0/Sheildy/lib/widgets/HOmemain_container.dart
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shieldy/model/post.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/widgets/CommentSection.dart';
 import '../utils/colors.dart';
@@ -10,7 +14,7 @@ import 'package:shieldy/widgets/share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 
 class FeedContainer extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -180,15 +184,15 @@ class _FeedContainerState extends State<FeedContainer> {
                 ),
               ),
             ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const Icon(Icons.share_outlined),
-            // ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.share_outlined),
+            ),
 
-         IconButton(
-  onPressed: () => _sharePost(widget.snap['postUrl']),
-  icon: const Icon(Icons.share_outlined),
-),
+//          IconButton(
+//   onPressed: () => _sharePost(widget.snap['postUrl']),
+//   icon: const Icon(Icons.share_outlined),
+// ),
             IconButton(
               onPressed: _openMapWithLocation,
               icon: const Icon(Icons.location_on_outlined),
@@ -366,53 +370,106 @@ class _FeedContainerState extends State<FeedContainer> {
   }
 
 
-    Future<void> _sharePost(String postUrl) async {
-  final shareOptions = [
-    'Copy Link',
-    'Share on Instagram',
-    'Share on WhatsApp',
-    'Share on Telegram',
-    'Share via Email',
-  ];
-  final selected = await showDialog<int>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Share'),
-        content: Column(
-          children: shareOptions
-              .asMap()
-              .entries
-              .map(
-                (entry) => ListTile(
-                  title: Text(entry.value),
-                  onTap: () => Navigator.pop(context, entry.key),
-                ),
-              )
-              .toList(),
-        ),
-      );
-    },
-  );
+//     Future<void> _sharePost(String postUrl) async {
+//   final shareOptions = [
+//     'Copy Link',
+//     'Share on Instagram',
+//     'Share on WhatsApp',
+//     'Share on Telegram',
+//     'Share via Email',
+//   ];
+//   final selected = await showDialog<int>(
+//     context: context,
+//     builder: (context) {
+//       return AlertDialog(
+//         title: const Text('Share'),
+//         content: Column(
+//           children: shareOptions
+//               .asMap()
+//               .entries
+//               .map(
+//                 (entry) => ListTile(
+//                   title: Text(entry.value),
+//                   onTap: () => Navigator.pop(context, entry.key),
+//                 ),
+//               )
+//               .toList(),
+//         ),
+//       );
+//     },
+//   );
 
-  if (selected != null) {
-    switch (selected) {
-      case 0:
-        await Clipboard.setData(ClipboardData(text: postUrl));
-        break;
-      case 1:
-        await Share.share(postUrl, subject: 'Check out this post!');
-        break;
-      case 2:
-        await Share.share(postUrl, subject: 'Check out this post!');
-        break;
-      case 3:
-        await Share.share(postUrl, subject: 'Check out this post!');
-        break;
-      case 4:
-        await Share.share(postUrl, subject: 'Check out this post!');
-        break;
-    }
+  // if (selected != null) {
+  //   switch (selected) {
+  //     case 0:
+  //       await Clipboard.setData(ClipboardData(text: postUrl));
+  //       break;
+  //     case 1:
+  //       await Share.share(postUrl, subject: 'Check out this post!');
+  //       break;
+  //     case 2:
+  //       await Share.share(postUrl, subject: 'Check out this post!');
+  //       break;
+  //     case 3:
+  //       await Share.share(postUrl, subject: 'Check out this post!');
+  //       break;
+  //     case 4:
+  //       await Share.share(postUrl, subject: 'Check out this post!');
+  //       break;
+  //   }
+  // }
+// }
+
+
+Future<void> sendEmailForHighLikes(Post post) async {
+  final likes = post.likes.length;
+  if (likes > 5) {
+    final emailBody = '''
+Description: ${post.description}
+Location: ${post.location}
+Post URL: ${post.postUrl}
+''';
+
+    final emailSubject = 'TO INFORM  A THREAT';
+    final smtpServer = 'smtp.example.com';
+    final smtpPort = 587;
+    final smtpUsername = 'tOPsECRETS';
+    final smtpPassword = 'tOPsECRETS123';
+    final recipientEmail = '	rnd@rda.gov.lk';
+
+    final message = '''
+From: 	topsecrets.gpt@gmail.com
+To: $recipientEmail
+Subject: $emailSubject
+
+$emailBody
+''';
+
+    final socket = await Socket.connect(smtpServer, smtpPort);
+    socket.listen((data) {
+      print(String.fromCharCodes(data));
+    });
+
+    socket.write('HELO\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('AUTH LOGIN\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('${base64.encode(utf8.encode(smtpUsername))}\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('${base64.encode(utf8.encode(smtpPassword))}\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('MAIL FROM:<sender@example.com>\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('RCPT TO:<$recipientEmail>\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('DATA\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write(message);
+    socket.write('\n.\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.write('QUIT\n');
+    await Future.delayed(const Duration(seconds: 1));
+    socket.destroy();
   }
 }
 

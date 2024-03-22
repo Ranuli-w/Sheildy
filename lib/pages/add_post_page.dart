@@ -77,8 +77,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     if (_file == null) {
       return Center(
-        child: IconButton(
-          icon: const Icon(Icons.upload),
+        child: TextButton(
+          child: const Text('Select a Method to Upload a Post'),
           onPressed: () => showDialog(
             context: context,
             builder: (context) => SimpleDialog(
