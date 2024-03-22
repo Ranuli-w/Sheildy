@@ -7,23 +7,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<String> contactCards = [
-  'Achchuweli - Police Station', 'Agalawaththa - Police Station', 'Agarapathana - Police Station',
-  'Agbopura - Police Station', 'Ahangama - Police Station', 'Ahungalla - Police Station', 'Aiththamalai - Police Station',
-  'Akkaraipattu - Police Station', 'Akkarayankulam - Police Station', 'Akmeemana - Police Station',
-  'Akuressa - Police Station', 'Alawathugoda - Police Station', 'Alawwa - Police Station',
-  'Angulana - Police Station', 'BMICH - Police Station', 'Bambalapitiya - Police Station', 'Borella - Police Station',
-  'Boralesgamuwa - Police Station', 'Colombo Harbour - Police Station', 'Dematagoda - Police Station', 'Dehiwala - Police Station',
-  'Dompe - Police Station', 'Kaduwela - Police Station', 'Kahathuduwa - Police Station', 'Kesbewa - Police Station',
-  'Kiribathgoda - Police Station', 'Kollupitiya - Police Station', 'Kotahena - Police Station', 'Kohuwala - Police Station',
-  'Malabe - Police Station', 'Maligawatta - Police Station', 'Maradana - Police Station', 'Mirihana - Police Station',
-  'Moratuwa - Police Station', 'Mount Lavinia - Police Station', 'Narahenpita - Police Station', 'Nawagamuwa - Police Station',
-  'Panadura North - Police Station', 'Pettah - Police Station', 'Piliyandala - Police Station', 'Sapugaskanda - Police Station',
-  'Slave Island - Police Station', 'Thalangama - Police Station', 'Wellampitiya - Police Station', 'Wellawatta - Police Station',
-  'Welikada - Police Station', 'Wolfendhal - Police Station',
-  'Awissawella - Police Station', 'Mulleriyava - Police Station', 'Kosgama - Police Station', 'Padukka - Police Station',
-  'Hanwella - Police Station', 'Mattegoda - Police Station', 'Cinnamon Garden - Police Station', 'Dam Street - Police Station',
-  'Fore shore - Police Station', 'Grandpass - Police Station', 'Bluemandal - Police Station', 'Gothatuwa - Police Station',
-  'Pugoda - Police Station', 'Meepe - Police Station'
+  
 ];
 
   List<String> displayedCountries = [];
