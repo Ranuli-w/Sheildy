@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import flutter_facebook_auth
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
