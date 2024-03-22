@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shieldy/model/post.dart';
+import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,8 +15,7 @@ class FirestoreMethods {
     String description,
     Uint8List file,
     String uid,
-    String username,
-    String profImage,
+    String postUrl,
   ) async {
     String res = 'some error occured';
     try {
@@ -26,6 +27,10 @@ class FirestoreMethods {
       // Fetch current location
       Position position = await _determinePosition();
       String location = "${position.latitude}, ${position.longitude}";
+       // Get current user's username
+      String username = (await AuthMethods().getUserDetails()).username;
+      // Get current user's profile image
+      String profImage = await AuthMethods().getUserProfileImageUrl();
 
 
 
@@ -74,5 +79,47 @@ class FirestoreMethods {
     }
 
     return await Geolocator.getCurrentPosition();
+  }
+
+//likes adding to the firebase
+Future<void> updateLikes(String postId, bool isLiked) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final likesRef = _firestore.collection('Posts').doc(postId);
+
+    if (isLiked) {
+      await likesRef.update({
+        'likes': FieldValue.arrayUnion([uid]),
+      });
+    } else {
+      await likesRef.update({
+        'likes': FieldValue.arrayRemove([uid]),
+      });
+    }
+  }
+
+  Future<void> updateLikesAndDislikes(
+    String postId,
+    bool isLiked,
+    bool isDisliked,
+  ) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final postRef = _firestore.collection('Posts').doc(postId);
+
+    if (isLiked) {
+      await postRef.update({
+        'likes': FieldValue.arrayUnion([uid]),
+        'dislikes': FieldValue.arrayRemove([uid]),
+      });
+    } else if (isDisliked) {
+      await postRef.update({
+        'likes': FieldValue.arrayRemove([uid]),
+        'dislikes': FieldValue.arrayUnion([uid]),
+      });
+    } else {
+      await postRef.update({
+        'likes': FieldValue.arrayRemove([uid]),
+        'dislikes': FieldValue.arrayRemove([uid]),
+      });
+    }
   }
 }
