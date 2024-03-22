@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shieldy/components/square_tile.dart';
 import 'package:shieldy/pages/signup_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
@@ -83,13 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Flexible(
-              //   flex: 2,
-              //   child: Container(),
-              // ),
+              Flexible(
+                flex: 2,
+                child: Container(),
+              ),
         
               const SizedBox(
-                height: 250,
+                height: 64,
               ),
               Text_field_input(
                 hintText: 'Enter your email',
@@ -132,35 +131,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
-                height: 70,
+                height: 12,
               ),
-              // Flexible(
-              //   flex: 2,
-              //   child: Container(),
-              // ),
-
-              //Google and Facebook Buttons
-                const SizedBox(height: 0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-
-                    //Google Button
-                    SquareTile(
-                      onTap:() => AuthMethods().signInWithGoogle(context),
-                      imagePath: 'images/google.png'),
-
-                    SizedBox(width: 25),
-
-                    //Facebook Button
-                    SquareTile(
-                      onTap: () => AuthMethods().signInWithFacebook(context),
-                      imagePath: 'images/facebook.png'),
-                  ],
-                ),
-
-              const SizedBox(height: 10),
-
+              Flexible(
+                flex: 2,
+                child: Container(),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -186,8 +162,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 10),
                 ],
               ),
             ],

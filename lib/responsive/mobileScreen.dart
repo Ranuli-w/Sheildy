@@ -56,6 +56,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             NeverScrollableScrollPhysics(), //stop scrolling of page by touching horizontally
       ),
       bottomNavigationBar: CupertinoTabBar(
+        
         backgroundColor: mobileBackgroundColor,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

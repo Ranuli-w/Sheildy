@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
@@ -41,60 +40,42 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  backgroundColor: mobileBackgroundColor,
-  title: StreamBuilder<User?>(
-    stream: FirebaseAuth.instance.authStateChanges(),
-    builder: (context, snapshot) {
-      void printHelloUsername(String? username) {
-    if (username != null) {
-      print('Hello $username');
-    } else {
-      print('Hello user');
-    }
-  }
-      if (snapshot.hasData) {
-        final user = snapshot.data;
-        return Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(user!.photoURL ?? ''),
-            ),
-            const SizedBox(width: 8.0),
-            Text(user.displayName ?? ''),
-          ],
-        );
-      } else {
-        return const Text('');
-      }
-    },
-  ),
-  actions: [
-    
-    const Spacer(),
-    IconButton(
-      icon: const Icon(Icons.notifications_none),
-      onPressed: () {
-        // Implement notification functionality
-      },
-    ),
-    IconButton(
-      onPressed: () async {
-        // Show loading dialog
-        _showLoadingDialog(context);
-        await Future.delayed(const Duration(seconds: 2));
-        // Call sign out method
-        await AuthMethods().signOut();
-        // Close the loading dialog
-        Navigator.of(context).pop();
-        // Navigate to login screen
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      },
-      icon: const Icon(Icons.logout),
-    ),
-  ],
-),
+        backgroundColor: mobileBackgroundColor, // Set background color here
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Implement the action when the profile icon is pressed
+            },
+          ),
+          Spacer(),
+
+          IconButton(
+            icon: const Icon(Icons.notifications_none),
+            onPressed: () {
+              // Implement the action when the notification icon is pressed
+            },
+          ),
+
+          //Sign out button
+          IconButton(
+            onPressed: () async {
+              // Show loading dialog
+              _showLoadingDialog(context);
+              await Future.delayed(Duration(seconds: 2));
+              // Call sign out method
+              await _authMethods.signOut();
+              // Close the loading dialog
+              Navigator.of(context).pop();
+              // Navigate to login screen
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Posts')
@@ -107,12 +88,18 @@ class Homepage extends StatelessWidget {
             );
           }
           return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) => FeedContainer(
-              snap: snapshot.data!.docs[index].data(),
-
-            ),
-          );
+  itemCount: snapshot.data!.docs.length,
+  itemBuilder: (context, index) {
+    // Sort the list of documents by the number of likes
+    final sortedDocs = snapshot.data!.docs.toList()
+      ..sort((a, b) => (b['likes'] as List).length.compareTo((a['likes'] as List).length));
+    
+    return FeedContainer(
+      snap: sortedDocs[index].data(),
+    );
+  },
+);
+;
         },
       ),
     );

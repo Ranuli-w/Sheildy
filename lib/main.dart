@@ -1,20 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 // Import the WelcomePage class
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:shieldy/pages/splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shieldy/pages/account_screen.dart';
+import 'package:shieldy/pages/add_post_page.dart';
+import 'package:shieldy/pages/home.dart';
+import 'package:shieldy/pages/login_screen.dart';
+import 'package:shieldy/pages/map.dart';
+import 'package:shieldy/providers/UserProvider.dart';
+import 'package:shieldy/responsive/mobileScreen.dart';
+import 'package:shieldy/responsive/responsiveLayout.dart';
+import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/colors.dart';
-
 import 'firebase_options.dart';
+import 'package:shieldy/pages/search_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    const MyApp(),
-    // useInheritedMediaQuery: true,
-    );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,15 +33,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Changed the home to WelcomePage
+      home: LoginScreen(), // Changed the home to WelcomePage
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );
   }
-
-
-
-  
 }
 
 
