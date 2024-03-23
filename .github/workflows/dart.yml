@@ -26,7 +26,9 @@ jobs:
      - name: Upgrade dependencies
        run: flutter upgrade
        
-     - name: run the application
-       run: flutter run -d web-server
+     - name: Run the application
+       run: |
+          flutter run -d web-server
+          flutter quit
 
 
