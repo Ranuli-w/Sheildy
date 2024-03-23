@@ -5,6 +5,8 @@ class User {
   final String uid;
   final String photoUrl;
   final String username;
+  final String age;
+  final String nic;
 
 
   const User(
@@ -12,6 +14,8 @@ class User {
       required this.uid,
       required this.photoUrl,
       required this.email,
+      required this.age,
+      required this.nic,
       });
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -22,6 +26,8 @@ class User {
       uid: snapshot["uid"],
       email: snapshot["email"],
       photoUrl: snapshot["photoUrl"],
+      age: snapshot["age"],
+      nic: snapshot["nic"],
       
     );
   }
@@ -31,6 +37,8 @@ class User {
         "uid": uid,
         "email": email,
         "photoUrl": photoUrl,
+        "age": age,
+        "nic": nic,
         
       };
 }

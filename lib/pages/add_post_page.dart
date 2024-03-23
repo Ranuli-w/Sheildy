@@ -34,30 +34,30 @@ class _AddPostScreenState extends State<AddPostScreen> {
     }
   }
 
-  Future<void> postImage(
-    String uid,
-    String photoUrl,
-    String location,
-    String use,
-  ) async {
-    try {
-      String res = await FirestoreMethods().uploadPost(
-        _descriptionController.text,
-        _file!,
-        uid,
-        photoUrl,
-        username ?? '',
-      );
+  // Future<void> postImage(
+  //   String uid,
+  //   String photoUrl,
+  //   String location,
+  //   String use,
+  // ) async {
+  //   try {
+  //     String res = await FirestoreMethods().uploadPost(
+  //       _descriptionController.text,
+  //       _file!,
+  //       uid,
+  //       photoUrl,
+  //       username ?? '',
+  //     );
 
-      if (res == "success") {
-        showSnackBar(context, 'posted!');
-      } else {
-        showSnackBar(context, res);
-      }
-    } catch (err) {
-      showSnackBar(context, err.toString());
-    }
-  }
+  //     if (res == "success") {
+  //       showSnackBar(context, 'posted!');
+  //     } else {
+  //       showSnackBar(context, res);
+  //     }
+  //   } catch (err) {
+  //     showSnackBar(context, err.toString());
+  //   }
+  // }
 
   _selectImage(BuildContext context, ImageSource source) async {
     Navigator.of(context).pop();
@@ -142,7 +142,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       _file!,
                       user.uid,
                       downloadUrl,
-                      username,
                     );
 
                     setState(() {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shieldy/utils/colors.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
+//database connection- Read
 class _SearchScreenState extends State<SearchScreen> {
   List<String> contactCards = [
   'Achchuweli - Police Station', 'Agalawaththa - Police Station', 'Agarapathana - Police Station',
@@ -60,24 +62,74 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildSearchResults() {
-    return ListView.builder(
-      itemCount: displayedCountries.length,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-            title: Text(displayedCountries[index]),
+
+Widget _buildSearchResults() {
+  return ListView.builder(
+    itemCount: displayedCountries.length,
+    itemBuilder: (context, index) {
+      return Card(
+        elevation: 4, // Add elevation for a shadow effect
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Add margin around the Card
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // Add rounded corners to the Card
+        ),
+        child: ListTile(
+          contentPadding: EdgeInsets.all(16), // Add padding inside the ListTile
+          leading: Icon(Icons.location_on, color: blueColor), // Add a leading icon
+          title: Text(
+            displayedCountries[index],
+            style: TextStyle(
+              fontWeight: FontWeight.bold, // Make the text bold
+              fontSize: 16, // Increase the font size
+            ),
           ),
-        );
-      },
-    );
-  }
+          subtitle: Text(
+            'Police Station', // Add a subtitle
+            style: TextStyle(color: Colors.grey), // Customize the subtitle style
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.phone, color: const Color.fromARGB(255, 255, 255, 255)), // Add a trailing icon button
+            onPressed: () {
+            },
+          ),
+          onTap: () {
+          },
+        ),
+      );
+    },
+  );
 }
+
+
+  // Widget _buildSearchResults() {
+//   return Container(
+//     color: Color.fromARGB(255, 0, 0, 0), // Change background color to black
+//     margin: EdgeInsets.all(10), // Add margin around the search results
+//     child: ListView.separated(
+//       itemCount: displayedCountries.length,
+//       separatorBuilder: (context, index) => Divider(color: Colors.white), // Add Divider between items
+//       itemBuilder: (context, index) {
+//         return Card(
+//           color: Color.fromARGB(255, 0, 0, 0), // Set card background color to white
+//           child: ListTile(
+//             title: Text(
+//               displayedCountries[index],
+//               style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)), // Set text color to black
+//             ),
+//           ),
+//         );
+//       },
+//     ),
+//   );
+// }
+}
+
 
 class SearchBar extends StatelessWidget {
   final ValueChanged<String> onQueryChanged;
 
   SearchBar({required this.onQueryChanged});
+  //searcch bar implementation
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,7 @@
 			<!-- TODO Replace this value: -->
 			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 			<string>com.googleusercontent.apps.974630074811-3d6ea17gr9vrbp79j99ojrofatoqmesh</string>
-			<string>968090704741998</string>
+			<string>fb968090704741998</string>
 		</array>
 	</dict>
 </array>
@@ -22,6 +22,8 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
+	<string>968090704741998</string>
+	<key>FacebookDisplayName</key>
 	<string>Shieldy</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
