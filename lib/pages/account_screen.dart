@@ -7,7 +7,7 @@ import 'package:shieldy/model/user.dart';
 import 'package:shieldy/pages/edit_screen.dart';
 import 'package:shieldy/pages/privacy@policy.dart';
 import 'package:shieldy/utils/colors.dart';
-import 'package:shieldy/widgets/Forward_button.dart';
+import 'package:shieldy/widgets/forward_button.dart';
 import 'package:shieldy/widgets/setting_item.dart';
 import 'package:shieldy/widgets/setting_switch.dart';
 

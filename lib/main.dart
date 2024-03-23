@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/splash_screen.dart';
+import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/utils/colors.dart';
 
 import 'firebase_options.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AccountScreen(), // Changed the home to WelcomePage
+      home: MobileScreenLayout(), // Changed the home to WelcomePage
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );
