@@ -27,7 +27,6 @@ jobs:
        run: flutter upgrade
        
      - name: run the application
-       run: flutter run -d web-server | q
-
+       run: flutter run -d web-server
 
 
