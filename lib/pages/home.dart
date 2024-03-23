@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
+import 'package:shieldy/utils/GlobalVariables.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/HOmemain_container.dart';
 
@@ -38,9 +39,16 @@ class Homepage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor, // Set background color here
+      appBar:
+       width > webScreenSize
+          ? null :AppBar(
+        backgroundColor:
+          width > webScreenSize ? webBackgroundColor : mobileBackgroundColor, // Set background color here
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
@@ -91,9 +99,20 @@ class Homepage extends StatelessWidget {
           }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) => FeedContainer(
-              snap: snapshot.data!.docs[index].data(),
+            itemBuilder: (context, index) => Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: width > webScreenSize ? width * 0.3 : 0,
+                vertical: width > webScreenSize ? 15 : 0,
+              ),
 
+
+
+              child: FeedContainer
+              (
+                
+                snap: snapshot.data!.docs[index].data(),
+              
+              ),
             ),
           );
         },

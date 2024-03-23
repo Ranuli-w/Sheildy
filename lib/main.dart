@@ -1,7 +1,11 @@
 // Import the WelcomePage class
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/pages/splash_screen.dart';
+import 'package:shieldy/responsive/mobileScreen.dart';
+import 'package:shieldy/responsive/responsiveLayout.dart';
+import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/colors.dart';
 
 import 'firebase_options.dart';
@@ -25,9 +29,38 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Changed the home to WelcomePage
-      theme: ThemeData.dark()
-          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+      title: "Sheildy",
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: mobileBackgroundColor,
+      ),
+
+      home:StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              return  responsiveLayout(
+                webScreenLayout: webScreenLayout(),
+                mobileScreenLayout: const MobileScreenLayout(),);
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('${snapshot.error}'),
+              );
+            }
+            
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return SplashScreen();
+        }
+      )
+      //home: SplashScreen(), // Changed the home to WelcomePage
+      // theme: ThemeData.dark()
+      //     .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
     );
   }
 
