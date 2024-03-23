@@ -6,6 +6,7 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
+//database connection- Read
 class _SearchScreenState extends State<SearchScreen> {
   List<String> contactCards = [
   'Achchuweli - Police Station', 'Agalawaththa - Police Station', 'Agarapathana - Police Station',
@@ -61,18 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  // Widget _buildSearchResults() {
-  //   return ListView.builder(
-  //     itemCount: displayedCountries.length,
-  //     itemBuilder: (context, index) {
-  //       return Card(
-  //         child: ListTile(
-  //           title: Text(displayedCountries[index]),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+
 Widget _buildSearchResults() {
   return ListView.builder(
     itemCount: displayedCountries.length,
@@ -100,13 +90,9 @@ Widget _buildSearchResults() {
           trailing: IconButton(
             icon: Icon(Icons.phone, color: const Color.fromARGB(255, 255, 255, 255)), // Add a trailing icon button
             onPressed: () {
-              // Implement onPressed action for the trailing icon
-              // You can add functionality here, such as making a phone call
             },
           ),
           onTap: () {
-            // Implement onTap action for the ListTile
-            // You can add functionality here, such as navigating to a details screen
           },
         ),
       );
@@ -138,10 +124,12 @@ Widget _buildSearchResults() {
 // }
 }
 
+
 class SearchBar extends StatelessWidget {
   final ValueChanged<String> onQueryChanged;
 
   SearchBar({required this.onQueryChanged});
+  //searcch bar implementation
 
   @override
   Widget build(BuildContext context) {
