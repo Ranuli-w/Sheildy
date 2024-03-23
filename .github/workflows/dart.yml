@@ -21,8 +21,10 @@ jobs:
        uses: subosito/flutter-action@v2
      - name: Get dependencies
        run: flutter pub get
+     - name: clean 
+       run: flutter clean
      - name: Build and Test
-       run: flutter run
+       run: flutter run -d chrome
 
 
 
