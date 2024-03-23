@@ -33,7 +33,8 @@ jobs:
         run: flutter pub get
   
       - name: Build APK
-        run: flutter run
+        run: flutter run -d chrome
+        
 
 
 
