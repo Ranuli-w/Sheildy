@@ -212,7 +212,7 @@ class _FeedContainerState extends State<FeedContainer> {
                     children:  [
                       TextSpan(
                         
-                        text:
+                        text: 
                         widget.snap['username'],
                         
                         //'username',
