@@ -21,8 +21,8 @@ class Homepage extends StatelessWidget {
       builder: (context) {
         return Dialog(
           child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
+            padding: const EdgeInsets.all(16),
+            child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(),
@@ -49,6 +49,8 @@ class Homepage extends StatelessWidget {
             },
           ),
           Spacer(),
+
+          
 
           IconButton(
             icon: const Icon(Icons.notifications_none),
@@ -88,18 +90,12 @@ class Homepage extends StatelessWidget {
             );
           }
           return ListView.builder(
-  itemCount: snapshot.data!.docs.length,
-  itemBuilder: (context, index) {
-    // Sort the list of documents by the number of likes
-    final sortedDocs = snapshot.data!.docs.toList()
-      ..sort((a, b) => (b['likes'] as List).length.compareTo((a['likes'] as List).length));
-    
-    return FeedContainer(
-      snap: sortedDocs[index].data(),
-    );
-  },
-);
-;
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) => FeedContainer(
+              snap: snapshot.data!.docs[index].data(),
+
+            ),
+          );
         },
       ),
     );

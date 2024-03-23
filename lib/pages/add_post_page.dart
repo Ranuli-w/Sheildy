@@ -21,7 +21,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
   String? _userLocation;
   String? username = FirebaseAuth.instance.currentUser?.displayName;
 
-
   Future<void> getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -78,8 +77,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     if (_file == null) {
       return Center(
-        child: TextButton(
-          child: const Text('Select a Method to Upload a Post'),
+        child: IconButton(
+          icon: const Icon(Icons.upload),
           onPressed: () => showDialog(
             context: context,
             builder: (context) => SimpleDialog(
