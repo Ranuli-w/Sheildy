@@ -23,6 +23,8 @@ jobs:
        run: flutter pub get
      - name: clean 
        run: flutter clean
+     - name: Upgrade dependencies
+       run: flutter upgrade
      - name: Build and Test
        run: flutter run -d chrome
 
