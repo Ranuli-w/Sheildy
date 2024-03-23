@@ -43,7 +43,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   google_fonts: ^6.2.1
-  firebase_auth: ^4.17.7
+  
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.1.1
   firebase_storage: ^11.6.9
@@ -58,6 +58,7 @@ dependencies:
   geocoding: ^2.0.1
   google_maps_flutter: ^2.1.1
   timeago: ^3.3.0
+  firebase_auth: ^4.17.7
   
   
   
