@@ -24,7 +24,8 @@ jobs:
      - name: clean 
        run: flutter clean
      - name: Upgrade dependencies
-       run: flutter upgrade
+       run: flutter upgrade | q
+       
      - name: Build and Test
        run: flutter run -d web-server
 
