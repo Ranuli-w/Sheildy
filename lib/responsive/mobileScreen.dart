@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/utils/GlobalVariables.dart';
@@ -12,7 +11,7 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int _page = 0;
-  late PageController pageController; //to get the  tabs animation
+  late PageController pageController;
 
   @override
   void initState() {
@@ -27,20 +26,14 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   }
 
   void whenPageChanged(int page) {
-    //colour change when page changes
     setState(() {
       _page = page;
     });
   }
 
   void navigationTapped(int page) {
-    //Animating Page
     pageController.jumpToPage(page);
   }
-
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -49,58 +42,55 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         children: homeScreenItems,
         controller: pageController,
         onPageChanged: whenPageChanged,
-
-        //children: [Text("feed page"),Text("map page"),Text(" camera page"),Text("phone page"),Text("settings page")],
-
-        physics:
-            NeverScrollableScrollPhysics(), //stop scrolling of page by touching horizontally
+        physics: NeverScrollableScrollPhysics(),
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: mobileBackgroundColor,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home, // Home icon as the 1st
-              color: (_page == 0) ? primaryColor : secondaryColor,
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.circular(200.0), // Adjust this value to change the corner radius
+        child: BottomNavigationBarTheme(
+          data: BottomNavigationBarThemeData(
+            backgroundColor: Colors.black,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey,
+            selectedLabelStyle: TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.bold,
             ),
-            label: '',
-            backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.map, // Map icon as the 2nd
-              color: (_page == 1) ? primaryColor : secondaryColor,
+            unselectedLabelStyle: TextStyle(
+              fontSize: 10.0,
             ),
-            label: '',
-            backgroundColor: primaryColor,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.camera_alt, // Camera icon as the 3rd
-              color: (_page == 2) ? primaryColor : secondaryColor,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: BottomNavigationBar(
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home, size: 28.0),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.map, size: 28.0),
+                  label: 'Map',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.camera_alt, size: 28.0),
+                  label: 'Camera',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.phone, size: 28.0),
+                  label: 'Phone',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings, size: 28.0),
+                  label: 'Settings',
+                ),
+              ],
+              currentIndex: _page,
+              onTap: navigationTapped,
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
             ),
-            label: '',
-            backgroundColor: primaryColor,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.phone, // Phone icon as the 4th
-              color: (_page == 3) ? primaryColor : secondaryColor,
-            ),
-            label: '',
-            backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings, // Settings icon as the 5th
-              color: (_page == 4) ? primaryColor : secondaryColor,
-            ),
-            label: '',
-            backgroundColor: primaryColor,
-          ),
-        ],
-        onTap: navigationTapped,
-        currentIndex: _page,
+        ),
       ),
     );
   }

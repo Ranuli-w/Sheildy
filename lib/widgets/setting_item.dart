@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:shieldy/widgets/forward_button.dart';
 import 'package:shieldy/widgets/forward_button.dart';
 
 class SettingItem extends StatelessWidget {
@@ -58,7 +59,7 @@ class SettingItem extends StatelessWidget {
                 )
               : const SizedBox(),
           const SizedBox(width: 20),
-          ForwardButton(onTap: onTap),
+          // ForwardButton(onTap: onTap),
         ],
       ),
     );
