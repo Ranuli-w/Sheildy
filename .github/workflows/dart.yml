@@ -28,7 +28,9 @@ jobs:
        
      - name: Run the application
        run: |
-          flutter run -d web-server
-          flutter quit
+            flutter run -d web-server &
+            # Wait for some time to allow the app to launch
+            sleep 10
+            pkill -f flutter
 
 
