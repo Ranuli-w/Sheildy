@@ -48,8 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => const responsiveLayout(
-                mobileScreenLayout: MobileScreenLayout(),
+              builder: (context) =>  responsiveLayout(
+                mobileScreenLayout: const MobileScreenLayout(),
                 webScreenLayout: webScreenLayout(),
               ),
             ),
