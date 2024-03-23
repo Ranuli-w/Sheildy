@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:shieldy/model/user.dart';
 import 'package:shieldy/pages/edit_screen.dart';
 import 'package:shieldy/pages/privacy@policy.dart';
 import 'package:shieldy/utils/colors.dart';
@@ -28,9 +31,14 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> fetchUserData() async {
+    auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      print('No user is signed in.');
+      return;
+    }
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('User_Details')
-        .doc('RGkggwaiKniHFnWAX17w')
+        .doc(currentUser.uid)
         .get();
     setState(() {
       name = doc['Name'];
