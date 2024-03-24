@@ -59,7 +59,7 @@ class SettingItem extends StatelessWidget {
                 )
               : const SizedBox(),
           const SizedBox(width: 20),
-          // ForwardButton(onTap: onTap),
+          ForwardButton(onTap: onTap),
         ],
       ),
     );

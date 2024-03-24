@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
@@ -76,33 +77,35 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     if (_file == null) {
-      return Center(
-        child: IconButton(
-          icon: const Icon(Icons.upload),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => SimpleDialog(
-              title: const Text('Create a Post'),
-              children: [
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Take A Photo'),
-                  onPressed: () => _selectImage(context, ImageSource.camera),
-                ),
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Choose From Gallery'),
-                  onPressed: () => _selectImage(context, ImageSource.gallery),
-                ),
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
+      return Stack(alignment: Alignment.center,
+        children: [Center(
+          child: IconButton(
+            icon: const Icon(Icons.upload),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => SimpleDialog(
+                title: const Text('Create a Post'),
+                children: [
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Take A Photo'),
+                    onPressed: () => _selectImage(context, ImageSource.camera),
+                  ),
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Choose From Gallery'),
+                    onPressed: () => _selectImage(context, ImageSource.gallery),
+                  ),
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Cancel'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        )]
       );
     } else {
       return Scaffold(
@@ -202,4 +205,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
       );
     }
   }
+
+  void initState() {
+  super.initState();
+  _checkLocationAndSendNotification();
+}
+
+Future<void> _checkLocationAndSendNotification() async {
+  while (true) {
+    await FirestoreMethods().checkLocationAndSendNotification();
+    await Future.delayed(const Duration(minutes: 5)); // Check every 5 minutes
+  }
+}
+
+
+
 }
