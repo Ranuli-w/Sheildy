@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/utils/GlobalVariables.dart';
 
 class MobileScreenLayout extends StatefulWidget {
