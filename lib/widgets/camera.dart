@@ -14,15 +14,33 @@ class _CameraPageState extends State<CameraPage> {
   CameraController? _cameraController;
   bool _isRearCameraSelected = true;
 
-  void _selectImage(BuildContext context, ImageSource source) async {
-    Navigator.of(context).pop();
-    Uint8List file = await pickImage(source);
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    _cameraController = CameraController(firstCamera, ResolutionPreset.medium);
+    await _cameraController!.initialize();
+    setState(() {});
+  }
+
+  void _toggleCameraSelection() {
+    setState(() {
+      _isRearCameraSelected = !_isRearCameraSelected;
+    });
+    _initializeCamera();
   }
 
   Future<void> _pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {}
+    if (pickedFile != null) {
+      // Do something with the selected image
+    }
   }
 
   void _showAddPostDialog(BuildContext context) {
@@ -41,24 +59,21 @@ class _CameraPageState extends State<CameraPage> {
             child: const Text('Choose From Gallery'),
             onPressed: () => _selectImage(context, ImageSource.gallery),
           ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ],
       ),
     );
   }
 
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-    _cameraController = CameraController(firstCamera, ResolutionPreset.medium);
-    await _cameraController!.initialize();
-    setState(() {});
-  }
-
-  void _toggleCameraSelection() {
-    setState(() {
-      _isRearCameraSelected = !_isRearCameraSelected;
-    });
-    _initializeCamera();
+  void _selectImage(BuildContext context, ImageSource source) async {
+    Navigator.of(context).pop();
+    Uint8List file = await pickImage(source);
+    // Do something with the selected image file
+    // You can navigate to the AddPostScreen and pass the file
   }
 
   @override
@@ -78,6 +93,10 @@ class _CameraPageState extends State<CameraPage> {
           IconButton(
             icon: Icon(Icons.photo_library),
             onPressed: _pickImageFromGallery,
+          ),
+          IconButton(
+            icon: Icon(Icons.add_a_photo),
+            onPressed: () => _showAddPostDialog(context),
           ),
         ],
       ),
