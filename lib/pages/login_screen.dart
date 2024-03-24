@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shieldy/components/square_tile.dart';
 import 'package:shieldy/pages/signup_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
@@ -130,7 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: !_isLoading
                         ? const Text(
-                            'Password',
+                            'Log In',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           )
                         : const CircularProgressIndicator(
                             color: primaryColor,
@@ -170,12 +173,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: const Text(
-                          'Dont have an account?',
-                        ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: const Text(
+                        'Dont have an account?',
                       ),
                     ),
                     GestureDetector(
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const Text(
-                          'Signup.',
+                          ' Signup.',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
