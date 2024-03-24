@@ -237,14 +237,7 @@ class _FeedContainerState extends State<FeedContainer> {
                 ),
               ),
 
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                  ),
-                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),),
-              ),
+              
               Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 4,

@@ -62,8 +62,9 @@ dependencies:
   camera: ^0.10.5+9
   location: ^5.0.3
   rxdart: ^0.27.7
-  dio: ^4.0.0
-
+  flutter_animate: ^4.5.0
+  hooks_riverpod: ^2.5.1
+  responsive_sizer: ^3.3.1
   
   
   
