@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
-import 'package:shieldy/utils/GlobalVariables.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/HOmemain_container.dart';
 
@@ -36,29 +36,30 @@ class Homepage extends StatelessWidget {
       },
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-
-
     return Scaffold(
-      appBar:
-       width > webScreenSize
-          ? null :AppBar(
+      appBar: AppBar(
         backgroundColor:
-          width > webScreenSize ? webBackgroundColor : mobileBackgroundColor, // Set background color here
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              // Implement the action when the profile icon is pressed
-            },
-          ),
-          Spacer(),
+            mobileBackgroundColor, // Ensure this color is defined or use a Color value directly
+        centerTitle: false,
+        title: Image.asset(
+          'images/logo1.png',
+          width: 100,
+          height: 50,
+          fit: BoxFit.contain,
+        ),
 
-          
+        // Set background color here
+        actions: [
+          // IconButton(
+          //   icon: const Icon(Icons.account_circle),
+          //   onPressed: () {
+          //     // Implement the action when the profile icon is pressed
+          //   },
+          // ),
+          // Spacer(),
 
           IconButton(
             icon: const Icon(Icons.notifications_none),
@@ -87,9 +88,7 @@ class Homepage extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('Posts')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -99,20 +98,8 @@ class Homepage extends StatelessWidget {
           }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) => Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: width > webScreenSize ? width * 0.3 : 0,
-                vertical: width > webScreenSize ? 15 : 0,
-              ),
-
-
-
-              child: FeedContainer
-              (
-                
-                snap: snapshot.data!.docs[index].data(),
-              
-              ),
+            itemBuilder: (context, index) => FeedContainer(
+              snap: snapshot.data!.docs[index].data(),
             ),
           );
         },

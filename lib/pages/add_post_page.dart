@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
@@ -18,24 +16,11 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-
- CameraController? _cameraController;
-  File? _selectedImage;
-  void initState() {
-    super.initState();
-    _initializeCamera();
-  }
-
-  
-
-
-
-  Uint8List? _file; // Stores the selected image file
+  Uint8List? _file;
   final TextEditingController _descriptionController = TextEditingController();
-  String? _userLocation; // Stores the user's location
-  String? username = FirebaseAuth.instance.currentUser?.displayName; // Stores the current user's display name
+  String? _userLocation;
+  String? username = FirebaseAuth.instance.currentUser?.displayName;
 
-  // Get the user's current location
   Future<void> getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -49,23 +34,38 @@ class _AddPostScreenState extends State<AddPostScreen> {
     }
   }
 
-  // Select an image from the camera or gallery
+  // Future<void> postImage(
+  //   String uid,
+  //   String photoUrl,
+  //   String location,
+  //   String use,
+  // ) async {
+  //   try {
+  //     String res = await FirestoreMethods().uploadPost(
+  //       _descriptionController.text,
+  //       _file!,
+  //       uid,
+  //       photoUrl,
+  //       username ?? '',
+  //     );
+
+  //     if (res == "success") {
+  //       showSnackBar(context, 'posted!');
+  //     } else {
+  //       showSnackBar(context, res);
+  //     }
+  //   } catch (err) {
+  //     showSnackBar(context, err.toString());
+  //   }
+  // }
+
   _selectImage(BuildContext context, ImageSource source) async {
-    Navigator.of(context).pop(); // Close the dialog
+    Navigator.of(context).pop();
     Uint8List file = await pickImage(source);
     setState(() {
       _file = file;
     });
   }
-  Future<void> _initializeCamera() async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-    _cameraController = CameraController(firstCamera, ResolutionPreset.medium);
-    await _cameraController!.initialize();
-    setState(() {});
-  }
-
-  
 
   @override
   void dispose() {
@@ -76,43 +76,43 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     if (_file == null) {
-      // Show a button to select an image
-      return Center(
-        child: IconButton(
-          icon: const Icon(Icons.upload),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => SimpleDialog(
-              title: const Text('Create a Post'),
-              children: [
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Take A Photo'),
-                  onPressed: () => _selectImage(context, ImageSource.camera),
-                ),
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Choose From Gallery'),
-                  onPressed: () => _selectImage(context, ImageSource.gallery),
-                ),
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
+      return Stack(alignment: Alignment.center,
+        children: [Center(
+          child: IconButton(
+            icon: const Icon(Icons.upload),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => SimpleDialog(
+                title: const Text('Create a Post'),
+                children: [
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Take A Photo'),
+                    onPressed: () => _selectImage(context, ImageSource.camera),
+                  ),
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Choose From Gallery'),
+                    onPressed: () => _selectImage(context, ImageSource.gallery),
+                  ),
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Cancel'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        )]
       );
     } else {
-      // Show the post creation UI with the selected image
       return Scaffold(
         appBar: AppBar(
           backgroundColor: mobileBackgroundColor,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => setState(() => _file = null), // Reset the selected image
+            onPressed: () => setState(() => _file = null),
           ),
           title: const Text('Publish Post'),
           centerTitle: false,
@@ -129,19 +129,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
               onPressed: () async {
                 User? user = FirebaseAuth.instance.currentUser;
                 if (_file != null && user != null) {
-                  // Check if the user's location is available
                   if (_userLocation == null) {
                     await getUserLocation();
                   }
                   if (_userLocation != null) {
-                    // Upload the image to Firebase Storage
                     String fileName = DateTime.now().toString() + '.jpg';
                     String username = user.displayName ?? '';
                     String folderPath = 'uploaded_posts/$username/photos';
                     String downloadUrl = await StorageMethods()
                         .uploadImageToStorage(folderPath, _file!, true);
 
-                    // Upload the post to Firestore
                     await FirestoreMethods().uploadPost(
                       _descriptionController.text,
                       _file!,
