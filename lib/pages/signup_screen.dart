@@ -61,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const responsiveLayout(
+          builder: (context) =>  responsiveLayout(
             mobileScreenLayout: MobileScreenLayout(),
             webScreenLayout: webScreenLayout(),
           ),
@@ -95,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  'assets/ic_instagram.svg',
+                  '',
                   color: primaryColor,
                   height: 64,
                 ),

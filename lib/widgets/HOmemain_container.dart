@@ -26,9 +26,10 @@ class _FeedContainerState extends State<FeedContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      
       children: [
         Container(
-          color: mobileBackgroundColor,
+          color: Colors.black,
           padding: const EdgeInsets.symmetric(
             vertical: 10,
           ),
@@ -81,9 +82,12 @@ class _FeedContainerState extends State<FeedContainer> {
 
         // Add the image here
         SizedBox(
+          
+          
           height: MediaQuery.of(context).size.height * 0.30,
           width: double.infinity,
           child: ClipRRect(
+            
             //borderRadius: BorderRadius.circular(20), // Set the desired border radius
             child: Image.network(
               widget.snap['postUrl'],
@@ -101,6 +105,7 @@ class _FeedContainerState extends State<FeedContainer> {
 
         Row(
           children: [
+            
             IconButton(
               onPressed: () async {
                 final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -212,7 +217,7 @@ class _FeedContainerState extends State<FeedContainer> {
                     children:  [
                       TextSpan(
                         
-                        text: 
+                        text:
                         widget.snap['username'],
                         
                         //'username',

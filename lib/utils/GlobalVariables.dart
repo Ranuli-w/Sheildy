@@ -10,6 +10,7 @@ import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/pages/search_screen.dart';
 
+
 const webScreenSize = 600;
 var homeScreenItems = [
   Homepage(),

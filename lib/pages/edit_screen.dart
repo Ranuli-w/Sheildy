@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shieldy/model/user.dart';
 import 'package:shieldy/widgets/edit_item.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
@@ -41,9 +44,14 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   Future<void> fetchUserData() async {
     try {
+      auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        print('No user is signed in.');
+        return;
+      }
       DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
           .collection('User_Details')
-          .doc('PqxosOhtmqPzcXqKKfcziDspACn2')
+          .doc(currentUser.uid)
           .get();
 
       if (userSnapshot.exists) {
@@ -81,9 +89,15 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         imageUrl = await taskSnapshot.ref.getDownloadURL();
       }
 
+      auth.User? currentUser = auth.FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        print('No user is signed in.');
+        return;
+      }
+
       await FirebaseFirestore.instance
           .collection('User_Details')
-          .doc('RGkggwaiKniHFnWAX17w')
+          .doc(currentUser.uid)
           .update({
         'Name': _nameController.text,
         'Gender': gender,
