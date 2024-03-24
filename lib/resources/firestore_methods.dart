@@ -122,4 +122,58 @@ Future<void> updateLikes(String postId, bool isLiked) async {
       });
     }
   }
+
+  Future<List<String>> getPostLocations() async {
+    final snapshots = await _firestore
+        .collection('Posts')
+        .where('likes', arrayContains: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    return snapshots.docs
+        .map((doc) => doc.data()['location'] as String)
+        .toList();
+  }
+
+Future<void> checkLocationAndSendNotification() async {
+  final userPosition = await Geolocator.getCurrentPosition();
+  final userLocation = "${userPosition.latitude}, ${userPosition.longitude}";
+  final postLocations = await getPostLocations();
+
+  for (final postLocation in postLocations) {
+    final distance = Geolocator.distanceBetween(
+      userPosition.latitude,
+      userPosition.longitude,
+      double.parse(postLocation.split(',')[0]),
+      double.parse(postLocation.split(',')[1]),
+    );
+
+    if (distance <= 1000) { // Within 1 km range
+      // Send a notification to the user
+      _sendNotification('You are near a post location');
+    }
+  }
+}
+
+Future<void> _sendNotification(String message) async {
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  await addNotification(userId, message);
+}
+ Future<void> addNotification(String userId, String message) async {
+    try {
+      await _firestore.collection('users').doc(userId).collection('notifications').add({
+        'message': message,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print('Error adding notification: $e');
+    }
+  }
+
+  Future<void> deleteNotification(String userId, String notificationId) async {
+    try {
+      await _firestore.collection('users').doc(userId).collection('notifications').doc(notificationId).delete();
+    } catch (e) {
+      print('Error deleting notification: $e');
+    }
+  }
+
 }
