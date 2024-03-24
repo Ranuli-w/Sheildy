@@ -50,7 +50,17 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor:
+            mobileBackgroundColor, // Ensure this color is defined or use a Color value directly
+        centerTitle: false,
+        title: Image.asset(
+          'images/logo1.png',
+          width: 100,
+          height: 50,
+          fit: BoxFit.contain,
+        ),
+      ),
       body: Column(
         children: [
           SearchBar(onQueryChanged: onQueryChanged),

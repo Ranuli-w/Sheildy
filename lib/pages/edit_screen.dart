@@ -57,12 +57,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       if (userSnapshot.exists) {
         setState(() {
           userData = userSnapshot.data() as Map<String, dynamic>;
-          _nameController.text = userData['Name'] ?? '';
+          _nameController.text = userData['username'] ?? '';
           gender = userData['Gender'] ?? 'Man';
           _ageController.text =
-              userData['Age'] != null ? userData['Age'].toString() : '';
-          _emailController.text = userData['Email'] ?? '';
-          _nicController.text = userData['NIC'] ?? '';
+              userData['age'] != null ? userData['age'].toString() : '';
+          _emailController.text = userData['email'] ?? '';
+          _nicController.text = userData['nic'] ?? '';
         });
       } else {
         print('User data not found');
@@ -99,12 +99,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           .collection('User_Details')
           .doc(currentUser.uid)
           .update({
-        'Name': _nameController.text,
+        'username': _nameController.text,
         'Gender': gender,
-        'Age': int.tryParse(_ageController.text) ?? 0,
-        'Email': _emailController.text,
-        'NIC': _nicController.text,
-        'Image': imageUrl, // Add the image url to the database
+        'age': int.tryParse(_ageController.text) ?? 0,
+        'email': _emailController.text,
+        'nic': _nicController.text,
+        'photoUrl': imageUrl, // Add the image url to the database
       });
       print('User data updated successfully');
     } catch (error) {
@@ -174,9 +174,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                 width: 110,
                                 height: 110,
                               )
-                            : userData['Image'] != null
+                            : userData['photoUrl'] != null
                                 ? Image.network(
-                                    userData['Image'],
+                                    userData['photoUrl'],
                                     width: 110,
                                     height: 110,
                                   )

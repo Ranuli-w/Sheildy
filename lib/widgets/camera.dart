@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shieldy/utils/add_post_util.dart';
+import 'package:shieldy/utils/colors.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -84,7 +85,15 @@ class _CameraPageState extends State<CameraPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Camera'),
+        backgroundColor:
+            mobileBackgroundColor, // Ensure this color is defined or use a Color value directly
+        centerTitle: false,
+        title: Image.asset(
+          'images/logo1.png',
+          width: 100,
+          height: 50,
+          fit: BoxFit.contain,
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.switch_camera),

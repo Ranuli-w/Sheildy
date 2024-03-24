@@ -76,33 +76,35 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     if (_file == null) {
-      return Center(
-        child: IconButton(
-          icon: const Icon(Icons.upload),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => SimpleDialog(
-              title: const Text('Create a Post'),
-              children: [
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Take A Photo'),
-                  onPressed: () => _selectImage(context, ImageSource.camera),
-                ),
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Choose From Gallery'),
-                  onPressed: () => _selectImage(context, ImageSource.gallery),
-                ),
-                SimpleDialogOption(
-                  padding: const EdgeInsets.all(20),
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
+      return Stack(alignment: Alignment.center,
+        children: [Center(
+          child: IconButton(
+            icon: const Icon(Icons.upload),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => SimpleDialog(
+                title: const Text('Create a Post'),
+                children: [
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Take A Photo'),
+                    onPressed: () => _selectImage(context, ImageSource.camera),
+                  ),
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Choose From Gallery'),
+                    onPressed: () => _selectImage(context, ImageSource.gallery),
+                  ),
+                  SimpleDialogOption(
+                    padding: const EdgeInsets.all(20),
+                    child: const Text('Cancel'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        )]
       );
     } else {
       return Scaffold(
