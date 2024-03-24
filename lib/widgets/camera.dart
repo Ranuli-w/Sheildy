@@ -17,8 +17,12 @@ class _CameraPageState extends State<CameraPage> {
   void _selectImage(BuildContext context, ImageSource source) async {
     Navigator.of(context).pop();
     Uint8List file = await pickImage(source);
-    // Do something with the selected image file
-    // You can navigate to the AddPostScreen and pass the file
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {}
   }
 
   void _showAddPostDialog(BuildContext context) {
@@ -31,6 +35,11 @@ class _CameraPageState extends State<CameraPage> {
             padding: const EdgeInsets.all(20),
             child: const Text('Take A Photo'),
             onPressed: () => _selectImage(context, ImageSource.camera),
+          ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Choose From Gallery'),
+            onPressed: () => _selectImage(context, ImageSource.gallery),
           ),
         ],
       ),
@@ -65,6 +74,10 @@ class _CameraPageState extends State<CameraPage> {
           IconButton(
             icon: Icon(Icons.switch_camera),
             onPressed: _toggleCameraSelection,
+          ),
+          IconButton(
+            icon: Icon(Icons.photo_library),
+            onPressed: _pickImageFromGallery,
           ),
         ],
       ),
