@@ -169,28 +169,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         "",
                         style: TextStyle(color: Colors.white),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                          80,
-                        ), // Half of width and height
-                        child: _file != null
-                            ? Image.file(
-                                _file!,
-                                width: 110,
-                                height: 110,
-                              )
-                            : imageUrl != ''
-                                ? Image.network(
-                                    imageUrl,
-                                    width: 110,
-                                    height: 110,
-                                  )
-                                : Image.asset(
-                                    "images/Avatar1.png",
-                                    width: 110,
-                                    height: 110,
-                                  ),
-                      ),
+          
                       TextButton(
                         onPressed: () {
                           showModalBottomSheet(

@@ -1,11 +1,13 @@
 // e:/flutterapps/SHEILDY2.0/Sheildy/lib/widgets/HOmemain_container.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:shieldy/pages/Heatmap.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/widgets/CommentSection.dart';
+
 import '../utils/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 
 class FeedContainer extends StatefulWidget {
@@ -235,14 +237,7 @@ class _FeedContainerState extends State<FeedContainer> {
                 ),
               ),
 
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                  ),
-                  child: Text('5 comments',style:const TextStyle(fontSize: 15,color: secondaryColor)),),
-              ),
+              
               Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 4,
@@ -262,14 +257,39 @@ class _FeedContainerState extends State<FeedContainer> {
       ],
     );
   }
-  Future<void> _openMapWithLocation() async {
-    final location = widget.snap['location'];
-    if (location != null) {
-      final query = Uri.encodeComponent('${location.split(',')[0]},${location.split(',')[1]}');
-      final url = 'https://www.google.com/maps/search/?api=1&query=$query';
-      await canLaunchUrl(Uri.parse(url))
-          ? await launchUrl(Uri.parse(url))
-          : throw 'Could not launch $url';
-    }
+
+  
+Future<void> _openMapWithLocation() async {
+  final location = widget.snap['location'];
+  if (location != null) {
+    final latitude = double.parse(location.split(',')[0]);
+    final longitude = double.parse(location.split(',')[1]);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Heatmap(
+          initialPosition: LatLng(latitude, longitude),
+        ),
+      ),
+    );
   }
+}
+
+
+
+
+
+
+
+  // Future<void> _openMapWithLocation() async {
+  //   final location = widget.snap['location'];
+  //   if (location != null) {
+  //     final query = Uri.encodeComponent('${location.split(',')[0]},${location.split(',')[1]}');
+  //     final url = 'https://www.google.com/maps/search/?api=1&query=$query';
+  //     await canLaunchUrl(Uri.parse(url))
+  //         ? await launchUrl(Uri.parse(url))
+  //         : throw 'Could not launch $url';
+  //   }
+  // }
 }

@@ -17,7 +17,7 @@ Post URL: ${post.postUrl}
     const smtpPort = 587;
     const smtpUsername = 'Sheildy admin';
     const smtpPassword = 'sheildy';
-    const recipientEmail = 'topsecrets.gpt@gmai';
+    const recipientEmail = 'topsecrets.gpt@gmai.com';
 
     final message = '''
 From: nuwintharana007@gmail.com
