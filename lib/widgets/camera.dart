@@ -21,6 +21,37 @@ class _CameraPageState extends State<CameraPage> {
     // You can navigate to the AddPostScreen and pass the file
   }
 
+  void _showAddPostDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('Create a Post'),
+        children: [
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(20),
+            child: const Text('Take A Photo'),
+            onPressed: () => _selectImage(context, ImageSource.camera),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _initializeCamera() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    _cameraController = CameraController(firstCamera, ResolutionPreset.medium);
+    await _cameraController!.initialize();
+    setState(() {});
+  }
+
+  void _toggleCameraSelection() {
+    setState(() {
+      _isRearCameraSelected = !_isRearCameraSelected;
+    });
+    _initializeCamera();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
@@ -30,7 +61,12 @@ class _CameraPageState extends State<CameraPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Camera'),
-        actions: [],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.switch_camera),
+            onPressed: _toggleCameraSelection,
+          ),
+        ],
       ),
       body: CameraPreview(_cameraController!),
     );
