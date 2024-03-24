@@ -59,6 +59,8 @@ dependencies:
   google_maps_flutter: ^2.1.1
   timeago: ^3.3.0
   firebase_auth: ^4.17.7
+  camera: ^0.10.5+9
+  # share_plus: ^8.0.2
   
   
   

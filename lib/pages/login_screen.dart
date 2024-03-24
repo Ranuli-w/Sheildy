@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shieldy/components/square_tile.dart';
 import 'package:shieldy/pages/signup_screen.dart';
 import 'package:shieldy/resources/auth_method.dart';
@@ -8,13 +7,8 @@ import 'package:shieldy/responsive/responsiveLayout.dart';
 import 'package:shieldy/responsive/webScreen.dart';
 import 'package:shieldy/utils/GlobalVariables.dart';
 import 'package:shieldy/utils/add_post_util.dart';
-import 'package:shieldy/utils/utils.dart';
-import 'package:flutter/material.dart';
 import 'package:shieldy/utils/colors.dart';
-import 'package:shieldy/widgets/HOmemain_container.dart';
 import 'package:shieldy/widgets/textfeild.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shieldy/pages/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -88,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 margin: const EdgeInsets.only(top: 75),
                 child: Image.asset(
-                  'images/2.png',
+                  'images/logo1.png',
                   height: 100,
                 ),
               ),
@@ -97,19 +91,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 1,
               ),
 
-              //APP Name
+              // //APP Name
 
-              Container(
-                margin: const EdgeInsets.only(top: 0),
-                child: const Text(
-                  'SHIELDY',
-                  style: TextStyle(
-                    fontSize: 50,
-                    // fontWeight: FontWeight.bold,
-                    fontFamily: 'Akatam',
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(top: 0),
+              //   child: const Text(
+              //     'SHIELDY',
+              //     style: TextStyle(
+              //       fontSize: 50,
+              //       // fontWeight: FontWeight.bold,
+              //       fontFamily: 'Akatam',
+              //     ),
+              //   ),
+              // ),
 
               // Flexible(
               //   flex: 2,
