@@ -83,13 +83,41 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
+              //Logo
+              Container(
+                margin: const EdgeInsets.only(top: 75),
+                child: Image.asset(
+                  'images/logo1.png',
+                  height: 100,
+                ),
+              ),
+
+              const SizedBox(
+                height: 1,
+              ),
+
+              // //APP Name
+
+              // Container(
+              //   margin: const EdgeInsets.only(top: 0),
+              //   child: const Text(
+              //     'SHIELDY',
+              //     style: TextStyle(
+              //       fontSize: 50,
+              //       // fontWeight: FontWeight.bold,
+              //       fontFamily: 'Akatam',
+              //     ),
+              //   ),
+              // ),
+
               // Flexible(
               //   flex: 2,
               //   child: Container(),
               // ),
         
               const SizedBox(
-                height: 250,
+                height: 50,
               ),
               Text_field_input(
                 hintText: 'Enter your email',

@@ -95,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  'assets/ic_instagram.svg',
+                  '',
                   color: primaryColor,
                   height: 64,
                 ),

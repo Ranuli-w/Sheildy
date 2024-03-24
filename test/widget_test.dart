@@ -1,30 +1,82 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// import 'dart:typed_data';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:shieldy/resources/auth_method.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+// void main() {
+//   TestWidgetsFlutterBinding.ensureInitialized();
+//   group('AuthMethods', () {
+//     late AuthMethods authMethods;
+//     late FirebaseAuth firebaseAuth;
+//     User? testUser;
 
-import 'package:shieldy/main.dart';
+//     setUp(() async {
+//       await Firebase.initializeApp();
+//       firebaseAuth = FirebaseAuth.instance;
+//       authMethods = AuthMethods();
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+//       // Create a test user
+//       String email = 'test@example.com';
+//       String password = 'password123';
+//       UserCredential userCredential =
+//           await firebaseAuth.createUserWithEmailAndPassword(
+//         email: email,
+//         password: password,
+//       );
+//       testUser = userCredential.user;
+//     });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+//     tearDown(() async {
+//       if (testUser != null) {
+//         await testUser!.delete();
+//       }
+//     });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+//     test('signUpUser', () async {
+//       // Arrange
+//       String email = 'test@example.com';
+//       String password = 'password123';
+//       String confirmPass = 'password123';
+//       String username = 'testuser';
+//       Uint8List file = Uint8List.fromList([1, 2, 3]);
+//       String age = '25';
+//       String nic = '123456789V';
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
-}
+//       // Act
+//       String result = await authMethods.signUpUser(
+//         email: email,
+//         password: password,
+//         confirmPass: confirmPass,
+//         username: username,
+//         file: file,
+//         age: age,
+//         nic: nic,
+//       );
+
+//       // Assert
+//       expect(result, 'success');
+
+//       // Clean up
+//       User? user = firebaseAuth.currentUser;
+//       if (user != null) {
+//         await user.delete();
+//       }
+//     });
+
+//     test('loginUser', () async {
+//       // Arrange
+//       String email = 'test@example.com';
+//       String password = 'password123';
+
+//       // Act
+//       String result = await authMethods.loginUser(
+//         email: email,
+//         password: password,
+//       );
+
+//       // Assert
+//       expect(result, 'success');
+//     });
+//   });
+// }
