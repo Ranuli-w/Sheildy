@@ -60,6 +60,11 @@ dependencies:
   timeago: ^3.3.0
   firebase_auth: ^4.17.7
   camera: ^0.10.5+9
+  location: ^5.0.3
+  rxdart: ^0.27.7
+  flutter_animate: ^4.5.0
+  hooks_riverpod: ^2.5.1
+  responsive_sizer: ^3.3.1
   
   
   

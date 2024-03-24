@@ -6,15 +6,38 @@ import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/widgets/HOmemain_container.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  double _logoWidth = 100;
+  double _logoHeight = 50;
+
+  void _animateLogo() {
+    setState(() {
+      _logoWidth = 150; // Adjust to target width
+      _logoHeight = 75; // Adjust to target height
+    });
+  }
+
+
 
   // Create an instance of AuthMethods
   final AuthMethods _authMethods = AuthMethods();
 
 
+  
+
   // Method to show loading dialog
   void _showLoadingDialog(BuildContext context) {
+
+
+
+    
     print("Showing loading dialog");
     showDialog(
       context: context,
@@ -41,15 +64,24 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:
-            mobileBackgroundColor, // Ensure this color is defined or use a Color value directly
+        //backgroundColor: Color(121212),
+        backgroundColor: mobileBackgroundColor,
         centerTitle: false,
-        title: Image.asset(
-          'images/logo1.png',
-          width: 100,
-          height: 50,
-          fit: BoxFit.contain,
+        title: AnimatedContainer(
+        duration: Duration(seconds: 1), // Adjust duration as needed
+        curve: Curves.easeInOut, // Adjust curve as needed
+        width: _logoWidth, // Define initial width
+        height: _logoHeight, // Define initial height
+        child: GestureDetector(
+          onTap: () {
+            _animateLogo(); // Trigger animation on tap
+          },
+          child: Image.asset(
+            'images/logo1.png',
+            fit: BoxFit.contain,
+          ),
         ),
+      ),
 
         // Set background color here
         actions: [
