@@ -507,6 +507,5 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     _ageController.dispose();
     _emailController.dispose();
     _nicController.dispose();
-    super.dispose();
-  }
+    super.dispose();}
 }
