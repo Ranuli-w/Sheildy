@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:shieldy/pages/Heatmap.dart';
 import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/add_post_page.dart';
+import 'package:shieldy/pages/googlrmaps.dart';
 import 'package:shieldy/pages/map.dart';
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/utils/colors.dart';
