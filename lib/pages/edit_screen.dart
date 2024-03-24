@@ -174,9 +174,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                 width: 110,
                                 height: 110,
                               )
-                            : userData['Image'] != null
+                            : userData['photoUrl'] != null
                                 ? Image.network(
-                                    userData['Image'],
+                                    userData['photoUrl'],
                                     width: 110,
                                     height: 110,
                                   )

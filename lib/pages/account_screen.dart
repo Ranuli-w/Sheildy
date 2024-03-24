@@ -51,11 +51,16 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: isDarkMode ? webBackgroundColor : mobileBackgroundColor,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Ionicons.chevron_back_outline),
+
+        backgroundColor:
+            mobileBackgroundColor, // Ensure this color is defined or use a Color value directly
+        centerTitle: false,
+        title: Image.asset(
+          'images/logo1.png',
+          width: 100,
+          height: 50,
+          fit: BoxFit.contain,
         ),
-        leadingWidth: 80,
       ),
       body: SingleChildScrollView(
         child: Padding(
