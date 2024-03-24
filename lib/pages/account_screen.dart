@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +25,7 @@ class _AccountScreenState extends State<AccountScreen> {
   bool isSwitched = false;
   String name = ''; // Default name
   String imageUrl = ''; // Default image URL
+  File? _file;
 
   @override
   void initState() {
@@ -86,20 +89,26 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: Row(
                   children: [
                     ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(50), // Half of width and height
-                      child: imageUrl != ''
-                          ? Image.network(
-                              imageUrl,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
+                      borderRadius: BorderRadius.circular(
+                        80,
+                      ), // Half of width and height
+                      child: _file != null
+                          ? Image.file(
+                              _file!,
+                              width: 110,
+                              height: 110,
                             )
-                          : Image.asset(
-                              "images/Avatar1.png",
-                              width: 100,
-                              height: 100,
-                            ),
+                          : imageUrl != ''
+                              ? Image.network(
+                                  imageUrl,
+                                  width: 110,
+                                  height: 110,
+                                )
+                              : Image.asset(
+                                  "images/Avatar1.png",
+                                  width: 110,
+                                  height: 110,
+                                ),
                     ),
                     const SizedBox(width: 30),
                     Column(
@@ -121,7 +130,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                     const Spacer(),
                     ForwardButton(onTap: () async {
-                      final newName = await Navigator.push<String>(
+                      final result = await Navigator.push<Map<String, dynamic>>(
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditAccountScreen(
@@ -129,9 +138,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                         ),
                       );
-                      if (newName != null) {
+                      if (result != null) {
                         setState(() {
-                          name = newName; // Update the name
+                          name = result['name'] ?? name;
+                          imageUrl = result['imageUrl'] ??
+                              imageUrl; // Update the imageUrl
                         });
                       }
                     }),
