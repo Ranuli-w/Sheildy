@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shieldy/pages/account_screen.dart';
 import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/pages/splash_screen.dart'; // Import the SplashScreen
 import 'package:shieldy/responsive/mobileScreen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(), // Set the SplashScreen as the initial route
       routes: {
         '/login': (context) => LoginScreen(),
-        '/home': (context) => SearchScreen(),
+        '/home': (context) => MobileScreenLayout()
       },
     );
   }

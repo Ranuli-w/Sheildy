@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:shieldy/pages/Heatmap.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/widgets/CommentSection.dart';
-
 import '../utils/colors.dart';
 
 
@@ -270,6 +269,7 @@ Future<void> _openMapWithLocation() async {
       MaterialPageRoute(
         builder: (context) => Heatmap(
           initialPosition: LatLng(latitude, longitude),
+          isSpecificPostLocation: true
         ),
       ),
     );
