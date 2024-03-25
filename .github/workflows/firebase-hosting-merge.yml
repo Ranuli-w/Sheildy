@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: get dependencies
+        run : flutter pub get
+      - name: update dependencies
+        run : flutter pub upgrade
       - run: flutter run
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
