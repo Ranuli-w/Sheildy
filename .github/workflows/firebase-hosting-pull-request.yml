@@ -10,7 +10,9 @@ jobs:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+
+      - uses: actions/checkout@v4
+      - run: npm ci && npm run build
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
       - name: Get dependencies
@@ -21,6 +23,7 @@ jobs:
         run: flutter upgrade
       - name: Run the application
       - run: flutter run
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

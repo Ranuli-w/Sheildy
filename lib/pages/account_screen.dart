@@ -14,7 +14,7 @@ import 'package:shieldy/widgets/setting_item.dart';
 import 'package:shieldy/widgets/setting_switch.dart';
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({Key? key}) : super(key: key);
+  const AccountScreen({super.key});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -54,7 +54,6 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: isDarkMode ? webBackgroundColor : mobileBackgroundColor,
       appBar: AppBar(
-
         backgroundColor:
             mobileBackgroundColor, // Ensure this color is defined or use a Color value directly
         centerTitle: false,
@@ -72,10 +71,10 @@ class _AccountScreenState extends State<AccountScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Settings",
+                "Profile",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 44,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -85,7 +84,6 @@ class _AccountScreenState extends State<AccountScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 30),
@@ -160,7 +158,6 @@ class _AccountScreenState extends State<AccountScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 20),

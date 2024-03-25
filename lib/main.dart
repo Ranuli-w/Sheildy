@@ -5,6 +5,7 @@ import 'package:shieldy/pages/login_screen.dart';
 import 'package:shieldy/pages/splash_screen.dart'; // Import the SplashScreen
 import 'package:shieldy/responsive/mobileScreen.dart';
 import 'package:shieldy/utils/colors.dart';
+import 'package:shieldy/widgets/database.dart';
 
 import 'firebase_options.dart';
 
