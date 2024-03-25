@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shieldy/model/post.dart';
 import 'package:shieldy/resources/auth_method.dart';
 import 'package:shieldy/resources/storage_methods.dart';
@@ -175,5 +176,17 @@ Future<void> _sendNotification(String message) async {
       print('Error deleting notification: $e');
     }
   }
+
+  //method to fetch all the post locations from firestore database
+  Future<List<LatLng>> getAllPostLocations() async {
+  final snapshots = await _firestore.collection('Posts').get();
+  return snapshots.docs
+      .map((doc) {
+        final locationString = doc.data()['location'] as String;
+        final latLng = locationString.split(',');
+        return LatLng(double.parse(latLng[0]), double.parse(latLng[1]));
+      })
+      .toList();
+}
 
 }

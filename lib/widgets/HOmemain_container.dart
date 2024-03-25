@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:shieldy/pages/Heatmap.dart';
 import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/widgets/CommentSection.dart';
-
 import '../utils/colors.dart';
 
 class FeedContainer extends StatefulWidget {
@@ -242,16 +241,23 @@ class _FeedContainerState extends State<FeedContainer> {
       final latitude = double.parse(location.split(',')[0]);
       final longitude = double.parse(location.split(',')[1]);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Heatmap(
-            initialPosition: LatLng(latitude, longitude),
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Heatmap(
+          initialPosition: LatLng(latitude, longitude),
+          isSpecificPostLocation: true
         ),
-      );
-    }
+      ),
+    );
   }
+}
+
+
+
+
+
+
 
   // Future<void> _openMapWithLocation() async {
   //   final location = widget.snap['location'];

@@ -30,6 +30,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   late File? _file;
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> userData = {};
+  String imageUrl = '';
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     _emailController = TextEditingController();
     _nicController = TextEditingController();
     _file = null;
+
     fetchUserData();
   }
 
@@ -63,6 +65,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               userData['age'] != null ? userData['age'].toString() : '';
           _emailController.text = userData['email'] ?? '';
           _nicController.text = userData['nic'] ?? '';
+          imageUrl =
+              userData['photoUrl'] ?? ''; // Add the image url to the database
         });
       } else {
         print('User data not found');
@@ -130,7 +134,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   await _updateUserData(); // Update the user data in Firestore
-                  Navigator.pop(context, _nameController.text);
+                  Navigator.pop(context,
+                      {'name': _nameController.text, 'imageUrl': imageUrl});
                 }
               },
               icon: const Icon(Ionicons.checkmark, color: Colors.blue),
@@ -164,28 +169,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         "",
                         style: TextStyle(color: Colors.white),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                          80,
-                        ), // Half of width and height
-                        child: _file != null
-                            ? Image.file(
-                                _file!,
-                                width: 110,
-                                height: 110,
-                              )
-                            : userData['photoUrl'] != null
-                                ? Image.network(
-                                    userData['photoUrl'],
-                                    width: 110,
-                                    height: 110,
-                                  )
-                                : Image.asset(
-                                    "images/Avatar1.png",
-                                    width: 110,
-                                    height: 110,
-                                  ),
-                      ),
+          
                       TextButton(
                         onPressed: () {
                           showModalBottomSheet(

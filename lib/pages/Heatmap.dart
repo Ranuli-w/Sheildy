@@ -1,12 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/utils/colors.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Heatmap extends StatefulWidget {
   final LatLng? initialPosition;
+  final bool isSpecificPostLocation;
 
-  const Heatmap({Key? key, this.initialPosition}) : super(key: key);
+  const Heatmap({
+    Key? key,
+    this.initialPosition,
+    this.isSpecificPostLocation = false,
+  }) : super(key: key);
 
   @override
   _HeatmapState createState() => _HeatmapState();
@@ -16,26 +23,56 @@ class _HeatmapState extends State<Heatmap> {
   Set<Marker> _markers = {};
   late GoogleMapController mapController;
   late LatLng _initialPosition;
-  Marker? _initialMarker;
-
-
-
+  Marker? _specificPostMarker;
 
   @override
   void initState() {
     super.initState();
-    _initialPosition = widget.initialPosition ?? const LatLng(11.6021526, 104.9112173);
-    _fetchPosts();
+    _initialPosition = widget.initialPosition ?? const LatLng(6.899764025046091, 79.85366283963823);
+    _getUserLocation();
 
-    // Create the initial marker if initialPosition is provided
-    if (widget.initialPosition != null) {
-      _initialMarker = Marker(
-        markerId: const MarkerId('initialPosition'),
+    if (widget.isSpecificPostLocation == true) {
+      _specificPostMarker = Marker(
+        markerId: const MarkerId('specificPostLocation'),
         position: _initialPosition,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       );
+    } else {
+      _fetchPostLocations();
     }
   }
+
+
+  //get user location
+    Future<void> _getUserLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    final position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _initialPosition = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +88,6 @@ class _HeatmapState extends State<Heatmap> {
           fit: BoxFit.contain,
         ),
       ),
-      
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
@@ -59,7 +95,7 @@ class _HeatmapState extends State<Heatmap> {
           zoom: 14.4746,
         ),
         markers: Set.from(_markers)
-        ..addAll(_initialMarker != null ? [_initialMarker!] : [])
+          ..addAll(_specificPostMarker != null ? [_specificPostMarker!] : []),
       ),
     );
   }
@@ -68,32 +104,18 @@ class _HeatmapState extends State<Heatmap> {
     mapController = controller;
   }
 
-  void _fetchPosts() async {
-    final posts = await FirebaseFirestore.instance.collection('Posts').get();
+  //fetch post locations from firestore and set the markers
+  void _fetchPostLocations() async {
+    final postLocations = await FirestoreMethods().getAllPostLocations();
     final newMarkers = <Marker>{};
-    for (final post in posts.docs) {
-      final lat = post.data()['lat'];
-      final lng = post.data()['lng'];
+
+    for (final location in postLocations) {
       final marker = Marker(
-        markerId: MarkerId(post.id),
-        position: LatLng(lat, lng),
-        infoWindow: InfoWindow(
-          title: 'Post',
-          snippet: post.data()['content'],
-        ),
+        markerId: MarkerId(location.toString()),
+        position: location,
+        infoWindow: const InfoWindow(title: 'Post Location'),
       );
       newMarkers.add(marker);
-    }
-
-    // Add the initial marker if it exists
-    if (widget.initialPosition != null) {
-      newMarkers.add(
-        Marker(
-          markerId: const MarkerId('initialPosition'),
-          position: _initialPosition,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        ),
-      );
     }
 
     setState(() {

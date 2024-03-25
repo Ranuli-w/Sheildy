@@ -68,151 +68,139 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-          padding: MediaQuery.of(context).size.width > webScreenSize
-              ? EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 3)
-              : const EdgeInsets.symmetric(horizontal: 32),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-
-              //Logo
-              Container(
-                margin: const EdgeInsets.only(top: 75),
-                child: Image.asset(
-                  'images/logo1.png',
-                  height: 100,
-                ),
-              ),
-
-              const SizedBox(
-                height: 1,
-              ),
-
-              // //APP Name
-
-              // Container(
-              //   margin: const EdgeInsets.only(top: 0),
-              //   child: const Text(
-              //     'SHIELDY',
-              //     style: TextStyle(
-              //       fontSize: 50,
-              //       // fontWeight: FontWeight.bold,
-              //       fontFamily: 'Akatam',
-              //     ),
-              //   ),
-              // ),
-
-              // Flexible(
-              //   flex: 2,
-              //   child: Container(),
-              // ),
-        
-              const SizedBox(
-                height: 50,
-              ),
-              Text_field_input(
-                hintText: 'Enter your email',
-                textInputType: TextInputType.emailAddress,
-                textEditingController: _emailController,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-
-
-              Text_field_input(
-                hintText: 'Enter your password',
-                textInputType: TextInputType.text,
-                textEditingController: _passwordController,
-                isPass: true,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              InkWell(
-                onTap: loginUser,
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                    color: blueColor,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: MediaQuery.of(context).size.width > webScreenSize
+                ? EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 3)
+                : const EdgeInsets.symmetric(horizontal: 32),
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+          
+                //Logo
+                Container(
+                  margin: const EdgeInsets.only(top: 75),
+                  child: Image.asset(
+                    'images/logo1.png',
+                    height: 100,
                   ),
-                  child: !_isLoading
-                      ? const Text(
-                          'Log in',
-                        )
-                      : const CircularProgressIndicator(
-                          color: primaryColor,
-                        ),
                 ),
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              // Flexible(
-              //   flex: 2,
-              //   child: Container(),
-              // ),
-
-              //Google and Facebook Buttons
-                const SizedBox(height: 0),
+          
+                const SizedBox(
+                  height: 1,
+                ),
+          
+          
+                const SizedBox(
+                  height: 50,
+                ),
+                Text_field_input(
+                  hintText: 'Enter your email',
+                  textInputType: TextInputType.emailAddress,
+                  textEditingController: _emailController,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+          
+          
+                Text_field_input(
+                  hintText: 'Enter your password',
+                  textInputType: TextInputType.text,
+                  textEditingController: _passwordController,
+                  isPass: true,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                InkWell(
+                  onTap: loginUser,
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                      color: blueColor,
+                    ),
+                    child: !_isLoading
+                        ? const Text(
+                            'Log In',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          )
+                        : const CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 70,
+                ),
+                // Flexible(
+                //   flex: 2,
+                //   child: Container(),
+                // ),
+          
+                //Google and Facebook Buttons
+                  const SizedBox(height: 0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+          
+                      //Google Button
+                      SquareTile(
+                        onTap:() => AuthMethods().signInWithGoogle(context),
+                        imagePath: 'images/google.png'),
+          
+                      SizedBox(width: 25),
+          
+                      //Facebook Button
+                      SquareTile(
+                        onTap: () => AuthMethods().signInWithFacebook(context),
+                        imagePath: 'images/facebook.png'),
+                    ],
+                  ),
+          
+                const SizedBox(height: 10),
+          
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
-                    //Google Button
-                    SquareTile(
-                      onTap:() => AuthMethods().signInWithGoogle(context),
-                      imagePath: 'images/google.png'),
-
-                    SizedBox(width: 25),
-
-                    //Facebook Button
-                    SquareTile(
-                      onTap: () => AuthMethods().signInWithFacebook(context),
-                      imagePath: 'images/facebook.png'),
-                  ],
-                ),
-
-              const SizedBox(height: 10),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text(
-                      'Dont have an account?',
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SignupScreen(),
-                      ),
-                    ),
-                    child: Container(
+                    Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
-                        ' Signup.',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                        'Dont have an account?',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const Text(
+                          ' Signup.',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-
-                  const SizedBox(height: 10),
-                ],
-              ),
-            ],
+          
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -230,7 +230,7 @@ class SearchBar extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: TextField(
         onChanged: onQueryChanged,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: 'Search from location',
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.search),
