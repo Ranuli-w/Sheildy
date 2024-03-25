@@ -9,7 +9,7 @@ import 'package:shieldy/utils/colors.dart';
 import 'package:shieldy/pages/home.dart';
 import 'package:shieldy/pages/search_screen.dart';
 import 'package:shieldy/widgets/camera.dart';
-
+import 'package:shieldy/widgets/database.dart';
 
 const webScreenSize = 600;
 var homeScreenItems = [
@@ -19,9 +19,6 @@ var homeScreenItems = [
   // AddPostScreen(),
   SearchScreen(),
   AccountScreen(),
-
-
-  
 ];
   
   

@@ -21,7 +21,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> fetchDataFromMongoDB() async {
     // Replace with your MongoDB connection details
-    final db = await mongo.Db.create('mongodb://localhost:27017/Contacts');
+    final db =
+        await mongo.Db.create('mongodb://212.104.231.127:27017/Contacts');
     await db.open();
 
     final collection = db.collection('Numbers');
