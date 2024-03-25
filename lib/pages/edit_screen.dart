@@ -155,7 +155,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   "Account",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 44,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -169,7 +169,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         "",
                         style: TextStyle(color: Colors.white),
                       ),
-          
                       TextButton(
                         onPressed: () {
                           showModalBottomSheet(
