@@ -63,6 +63,151 @@
   {"station": "Gothatuwa - Police Station", "phone": "0112411146"},
   {"station": "Angulana - Police Station", "phone": "0112626357"},
   {"station": "Pugoda - Police Station", "phone": "0112405224"},
-  {"station": "Meepe - Police Station", "phone": "0112175450"}
-  ]
+  {"station": "Meepe - Police Station", "phone": "0112175450"},
+  {"station":"Angoda Fever Hospital - Hospital(Gov)","phone":" 0112411284"},
+  {"station": "General info", "phone": "rda@edu.min.spgov.lk"},
+  {"station": "Deputy General Manager (Road & Bridges)","phone": "091-2226440"},
+  {"station": "Deputy General Manager (Admin)","phone": "091-2224125"},
+  {
+    "name": "National Hospital of Sri Lanka",
+    "phone": "0112 691 111"
+  },
+  {
+    "name": "Lanka Hospitals",
+    "phone": "0115 430 000"
+  },
+  {
+    "name": "Kings Hospital Colombo",
+    "phone": "0117 743 743"
+  },
+  {
+    "name": "Nawaloka Hospital Specialist Centre",
+    "phone": "0115 577 111",
+    "location": "78 Colombo - Batticaloa Hwy"
+  },
+  {
+    "name": "Castle Street Hospital for Women",
+    "phone": "0112 696 231",
+    "location": "Castle St"
+  },
+  {
+    "name": "Western Hospital",
+    "phone": "0117 392 260",
+    "location": "218 Dr NM Perera Mawatha Rd"
+  },
+  {
+    "name": "National Hospital",
+    "phone": "0112 691 111",
+    "location": "WVC9+7Q6, Kynsey Rd"
+  },
+  {
+    "name": "Royal Hospital",
+    "phone": "0114 000 100",
+    "location": "No 62 W.A. Silva Mawatha"
+  },
+  {
+    "name": "Ratnam Hospital",
+    "phone": "0112 327 780",
+    "location": "WVC4+CVC, Dr Colvin R de Silva Mawatha"
+  },
+  {
+    "name": "Joseph Fraser Memorial Hospital",
+    "phone": "0112 049 999",
+    "location": "23 Joseph Fraser Rd, Off Keppetipola Rd"
+  },
+  {
+    "name": "Park Hospitals",
+    "phone": "0112 590 200",
+    "location": "186 Park Rd"
+  },
+  {
+    "name": "Durdans Hospital",
+    "phone": "0112 140 000",
+    "location": "3 Alfred Pl"
+  },
+  {
+    "name": "Ayush Hospital Colombo",
+    "phone": "0112 525 000",
+    "location": "562 A Aluthmawatha Rd"
+  },
+  {
+    "name": "Health Scan Private Hospital",
+    "phone": "0114 616 666",
+    "location": "95 Castle St"
+  },
+  {
+    "name": "Ninewells Hospital (Pvt) Ltd.",
+    "phone": "0114 520 999",
+    "location": "55 /1 Kirimandala Mawatha"
+  },
+  {
+    "name": "Colombo South Teaching Hospital - Kalubowila",
+    "phone": "0112 832 950",
+    "location": "Dehiwala-Mount Lavinia"
+  },
+  {
+    "name": "Asiri Central Hospital - Central Hospital Limited",
+    "phone": "0114 665 500",
+    "location": "114 Norris Canal Rd"
+  },
+  {
+    "name": "Accident Ward",
+    "phone": "0112 691 111",
+    "location": "Accident Ward, EW Perera Mawatha"
+  },
+  {
+    "name": "Colombo South Teaching Hospital (Kalubowila)",
+    "phone": "0112 832 950",
+    "location": "Dehiwala-Mount Lavinia"
+  },
+  {
+    "name": "De Soysa Hospital for Women",
+    "phone": "0112 662 619",
+    "location": "WV9C+X6V, Kynsey Rd"
+  },
+  {
+    "name": "CMC Fire Service Department",
+    "phone": "0112 422 222",
+    "location": "WVF6+7WW, T. B. Jayah Mawatha"
+  },
+  {
+    "name": "Fire Service Department CMC Kotahena Substation - 01",
+    "phone": "0112 430 348",
+    "location": "George R. De Silva Mawatha"
+  },
+  {
+    "name": "Port Fire Brigade",
+    "phone": "0112 432 332",
+    "location": "XV35+63V, Colombo Port Main Rd"
+  },
+  {
+    "name": "Colombo Fire Station",
+    "location": "WVXC+7F9, Prince of Wales Ave"
+  },
+  {
+    "name": "Grandpass Fire Station",
+    "phone": "0112 431 353",
+    "location": "WVXC+7FQ"
+  },
+  {
+    "name": "Fire Department - Kotte",
+    "phone": "0112 879 444",
+    "location": "Sri Jayawardenepura Kotte"
+  },
+  {
+    "name": "Fire Brigade and Department",
+    "phone": "0112 714 444",
+    "location": "Dehiwala-Mount Lavinia"
+  },
+  {
+    "name": "Fire & Rescue Training Academy",
+    "phone": "0112 364 040",
+    "location": "Colombo"
+  },
+  {
+    "name": "Fire Service Department CMC Gaspaha Sub Station - 04",
+    "phone": "0112 422 222",
+    "location": "WVQ3+HJ3, Main St"
+  }
+ ]
       

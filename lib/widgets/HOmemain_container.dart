@@ -8,26 +8,25 @@ import 'package:shieldy/resources/firestore_methods.dart';
 import 'package:shieldy/widgets/CommentSection.dart';
 import '../utils/colors.dart';
 
-
 class FeedContainer extends StatefulWidget {
-
   // ignore: prefer_typing_uninitialized_variables
   final snap;
-  const FeedContainer({ super.key,required this.snap,});
+  const FeedContainer({
+    super.key,
+    required this.snap,
+  });
 
   @override
   State<FeedContainer> createState() => _FeedContainerState();
 }
 
 class _FeedContainerState extends State<FeedContainer> {
-
   bool isLiked = false;
   bool isDisliked = false;
   final FirestoreMethods _firestoreMethods = FirestoreMethods();
   @override
   Widget build(BuildContext context) {
     return Column(
-      
       children: [
         Container(
           color: Colors.black,
@@ -45,9 +44,8 @@ class _FeedContainerState extends State<FeedContainer> {
                   children: [
                     CircleAvatar(
                       radius: 16,
-                      backgroundImage:  NetworkImage(
+                      backgroundImage: NetworkImage(
                         widget.snap['profImage'],
-                        
                       ),
                     ),
                     Expanded(
@@ -61,7 +59,7 @@ class _FeedContainerState extends State<FeedContainer> {
                           children: [
                             Text(
                               widget.snap['username'],
-                              
+
                               //'Username',
                               style: const TextStyle(
                                 color: Colors.white,
@@ -83,30 +81,21 @@ class _FeedContainerState extends State<FeedContainer> {
 
         // Add the image here
         SizedBox(
-          
-          
           height: MediaQuery.of(context).size.height * 0.30,
           width: double.infinity,
           child: ClipRRect(
-            
             //borderRadius: BorderRadius.circular(20), // Set the desired border radius
             child: Image.network(
               widget.snap['postUrl'],
 
-
-
-              
               // 'https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
               fit: BoxFit.cover,
             ),
           ),
         ),
 
-
-
         Row(
           children: [
-            
             IconButton(
               onPressed: () async {
                 final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -117,11 +106,9 @@ class _FeedContainerState extends State<FeedContainer> {
                   widget.snap['postId'],
                   isLiked,
                 );
-
-
               },
               icon: isLiked
-                  ? const Icon(Icons.arrow_upward,color: Colors.red)
+                  ? const Icon(Icons.arrow_upward, color: Colors.red)
                   : const Icon(Icons.arrow_upward_outlined),
             ),
             IconButton(
@@ -143,15 +130,12 @@ class _FeedContainerState extends State<FeedContainer> {
                           .red) // Change color to red when isDisliked is true
                   : Icon(Icons.arrow_downward_outlined),
             ),
-
-            
-            
             IconButton(
               icon: const Icon(Icons.chat_bubble_outline),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => CommentSection(
-                    postId: widget.snap['postId'].toString(), 
+                    postId: widget.snap['postId'].toString(),
                     //username: widget.snap['username'].toString(),
                   ),
                 ),
@@ -201,11 +185,7 @@ class _FeedContainerState extends State<FeedContainer> {
                     ),
                   ),
                 ],
-
-                ),
-
-              
-              
+              ),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -215,17 +195,16 @@ class _FeedContainerState extends State<FeedContainer> {
                 child: RichText(
                   text: TextSpan(
                     style: const TextStyle(color: primaryColor),
-                    children:  [
+                    children: [
                       TextSpan(
-                        
-                        text:
-                        widget.snap['username'],
-                        
+                        text: widget.snap['username'],
+
                         //'username',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
-                      ),TextSpan(
+                      ),
+                      TextSpan(
                         text: ' ${widget.snap['description']}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -235,17 +214,16 @@ class _FeedContainerState extends State<FeedContainer> {
                   ),
                 ),
               ),
-
-              
               Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 4,
                 ),
                 child: Text(
-                  DateFormat .yMMMd().format(widget.snap['datePublished'].toDate()),
-                  //'09/02/2024',
-                  
-                  //'09/02/2024',
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
+                    //'09/02/2024',
+
+                    //'09/02/2024',
 
                     style:
                         const TextStyle(fontSize: 15, color: secondaryColor)),
@@ -257,12 +235,11 @@ class _FeedContainerState extends State<FeedContainer> {
     );
   }
 
-  
-Future<void> _openMapWithLocation() async {
-  final location = widget.snap['location'];
-  if (location != null) {
-    final latitude = double.parse(location.split(',')[0]);
-    final longitude = double.parse(location.split(',')[1]);
+  Future<void> _openMapWithLocation() async {
+    final location = widget.snap['location'];
+    if (location != null) {
+      final latitude = double.parse(location.split(',')[0]);
+      final longitude = double.parse(location.split(',')[1]);
 
     Navigator.push(
       context,
